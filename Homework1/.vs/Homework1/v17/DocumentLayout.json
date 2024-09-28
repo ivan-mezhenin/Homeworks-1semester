@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Mezhe\\Desktop\\CHomeworks\\ZeroElements\\",
+  "WorkspaceRootPath": "C:\\Users\\Mezhe\\Desktop\\CHomeworks\\Homework1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{026F371E-9111-4732-8C23-97BDD728F89D}|swap\\swap.vcxproj|C:\\Users\\Mezhe\\Desktop\\CHomeworks\\ZeroElements\\swap\\swap.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{026F371E-9111-4732-8C23-97BDD728F89D}|swap\\swap.vcxproj|C:\\Users\\Mezhe\\Desktop\\CHomeworks\\Homework1\\swap\\swap.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{026F371E-9111-4732-8C23-97BDD728F89D}|swap\\swap.vcxproj|solutionrelative:swap\\swap.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -24,9 +24,9 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "swap.c",
-              "DocumentMoniker": "C:\\Users\\Mezhe\\Desktop\\CHomeworks\\ZeroElements\\swap\\swap.c",
+              "DocumentMoniker": "C:\\Users\\Mezhe\\Desktop\\CHomeworks\\Homework1\\swap\\swap.c",
               "RelativeDocumentMoniker": "swap\\swap.c",
-              "ToolTip": "C:\\Users\\Mezhe\\Desktop\\CHomeworks\\ZeroElements\\swap\\swap.c",
+              "ToolTip": "C:\\Users\\Mezhe\\Desktop\\CHomeworks\\Homework1\\swap\\swap.c",
               "RelativeToolTip": "swap\\swap.c",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
