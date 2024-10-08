@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Smart-QSort", "Smart-QSort\Smart-QSort.vcxproj", "{33A10A22-1255-46AA-87BE-F11D545A5806}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Search", "Search\Search.vcxproj", "{C6202B95-2A76-44F8-969D-4A627E790163}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{33A10A22-1255-46AA-87BE-F11D545A5806}.Release|x64.Build.0 = Release|x64
 		{33A10A22-1255-46AA-87BE-F11D545A5806}.Release|x86.ActiveCfg = Release|Win32
 		{33A10A22-1255-46AA-87BE-F11D545A5806}.Release|x86.Build.0 = Release|Win32
+		{C6202B95-2A76-44F8-969D-4A627E790163}.Debug|x64.ActiveCfg = Debug|x64
+		{C6202B95-2A76-44F8-969D-4A627E790163}.Debug|x64.Build.0 = Debug|x64
+		{C6202B95-2A76-44F8-969D-4A627E790163}.Debug|x86.ActiveCfg = Debug|Win32
+		{C6202B95-2A76-44F8-969D-4A627E790163}.Debug|x86.Build.0 = Debug|Win32
+		{C6202B95-2A76-44F8-969D-4A627E790163}.Release|x64.ActiveCfg = Release|x64
+		{C6202B95-2A76-44F8-969D-4A627E790163}.Release|x64.Build.0 = Release|x64
+		{C6202B95-2A76-44F8-969D-4A627E790163}.Release|x86.ActiveCfg = Release|Win32
+		{C6202B95-2A76-44F8-969D-4A627E790163}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
