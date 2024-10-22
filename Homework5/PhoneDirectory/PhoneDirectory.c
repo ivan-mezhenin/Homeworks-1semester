@@ -12,11 +12,14 @@ typedef struct {
 
 void fileReadData(const char fileName[], Directory directory[], int* currentLineIndex) {
     FILE* file = fopen(fileName, "r");
+
     if (file == NULL) {
         printf("Файла не существует\n");
         return;
     }
+
     int itIsNumber = 0;
+
     while (!feof(file)) {
         char buffer[100];
         const int readBytes = fscanf(file, "%s", buffer);
@@ -38,6 +41,22 @@ void fileReadData(const char fileName[], Directory directory[], int* currentLine
     fclose(file);
 }
 
+void addDataInFile(char filename[], Directory directory[], int lineCount) {
+    FILE* file = fopen(filename, "w");
+
+    if (file == NULL) {
+        printf("Файла не существует\n");
+        return;
+    }
+
+    for (int i = 0; i < lineCount; ++i) {
+        fprintf(file, "%s %s\n", directory[i].name, directory[i].number);
+    }
+
+    printf("Текущие данные были успешно загружены в файл %s\n", filename);
+    fclose(file);
+}
+
 void commands(void) {
     printf("0 - выйти\n");
     printf("1 - добавить запись (имя и телефон)\n");
@@ -48,7 +67,7 @@ void commands(void) {
     printf("\n");
 }
 
-void addDataInFile(Directory directory[], int currentLineIndex) {
+void addDataInDirectory(Directory directory[], int currentLineIndex) {
 
     if (currentLineIndex == 100) {
         printf("В телефонной книге недостаточно места для нового контакта!\n");
@@ -63,7 +82,6 @@ void addDataInFile(Directory directory[], int currentLineIndex) {
 }
 
 void printDirectory(Directory directory[], int currentLineIndex) {
-    setlocale(LC_ALL, "Russian");
     if (currentLineIndex == 0) {
         printf("В телефонной книге отсутствуют контакты\n");
         return;
@@ -72,6 +90,26 @@ void printDirectory(Directory directory[], int currentLineIndex) {
     for (int i = 0; i < currentLineIndex; ++i) {
         printf("Имя: %s Номер: %s\n", directory[i].name, directory[i].number);
     }
+}
+
+char* findNumber(char name[],Directory directory[], int lineCount) {
+    for (int i = 0; i < lineCount; ++i) {
+        if (strcmp(name, directory[i].name) == 0) {
+            return directory[i].number;
+        }
+    }
+    
+    return "";
+}
+
+char* findName(char number[], Directory directory[], int lineCount) {
+    for (int i = 0; i < lineCount; ++i) {
+        if (strcmp(number, directory[i].number) == 0) {
+            return directory[i].name;
+        }
+    }
+
+    return "";
 }
 
 void solve(void) {
@@ -94,11 +132,40 @@ void solve(void) {
             return;
         }
         else if (currentCommand == 1) {
-            addDataInFile(directory, lineCount);
+            addDataInDirectory(directory, lineCount);
             ++lineCount;
         }
         else if (currentCommand == 2) {
             printDirectory(directory, lineCount);
+        }
+        else if (currentCommand == 3) {
+            const char name[100];
+            printf("Введите имя: ");
+            scanf("%s", name);
+
+            char* number = findNumber(name, directory,lineCount);
+            if (strlen(number) != 0) {
+                printf("По имени %s был найден телефон: %s\n", name, number);
+            }
+            else {
+                printf("Телефон не найден\n");
+            }
+        }
+        else if (currentCommand == 4) {
+            const char number[100];
+            printf("Введите номер: ");
+            scanf("%s", number);
+
+            char* name = findName(number, directory, lineCount);
+            if (strlen(name) != 0) {
+                printf("По номер %s было найдено имя: %s\n", number, name);
+            }
+            else {
+                printf("Имя не найдено\n");
+            }
+        }
+        else if (currentCommand == 5) {
+            addDataInFile("data.txt", directory, lineCount);
         }
     }
 
