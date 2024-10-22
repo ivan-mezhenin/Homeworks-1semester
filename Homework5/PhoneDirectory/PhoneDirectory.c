@@ -75,9 +75,9 @@ void addDataInDirectory(Directory directory[], int currentLineIndex) {
     }
 
     printf("Введите имя: ");
-    scanf("%s", directory[currentLineIndex].name);
+    scanf("%s", &directory[currentLineIndex].name);
     printf("Введите номер телефона: ");
-    scanf("%s", directory[currentLineIndex].number);
+    scanf("%s", &directory[currentLineIndex].number);
     printf("Добавление нового контакта прошло успешно\n");
 }
 
@@ -92,13 +92,13 @@ void printDirectory(Directory directory[], int currentLineIndex) {
     }
 }
 
-char* findNumber(char name[],Directory directory[], int lineCount) {
+char* findNumber(char name[], Directory directory[], int lineCount) {
     for (int i = 0; i < lineCount; ++i) {
         if (strcmp(name, directory[i].name) == 0) {
             return directory[i].number;
         }
     }
-    
+
     return "";
 }
 
@@ -141,9 +141,9 @@ void solve(void) {
         else if (currentCommand == 3) {
             const char name[100];
             printf("Введите имя: ");
-            scanf("%s", name);
+            scanf("%s", &name);
 
-            char* number = findNumber(name, directory,lineCount);
+            char* number = findNumber(name, directory, lineCount);
             if (strlen(number) != 0) {
                 printf("По имени %s был найден телефон: %s\n", name, number);
             }
@@ -154,7 +154,7 @@ void solve(void) {
         else if (currentCommand == 4) {
             const char number[100];
             printf("Введите номер: ");
-            scanf("%s", number);
+            scanf("%s", &number);
 
             char* name = findName(number, directory, lineCount);
             if (strlen(name) != 0) {
@@ -172,8 +172,54 @@ void solve(void) {
 
 }
 
+bool fileReadDataTest(Directory testDirectory[], int lineCount) {
+    if (lineCount != 2) {
+        return false;
+    }
+    return strcmp(testDirectory[0].name, "Andrey") == 0 && strcmp(testDirectory[0].number, "89659155656") == 0 &&
+        strcmp(testDirectory[1].name, "Nikita") == 0 && strcmp(testDirectory[1].number, "89632565349") == 0;
+}
+
+bool findNumberTest(Directory testDirectory[], int lineCount) {
+    return (strcmp(findNumber("Nikita", testDirectory, lineCount), "89632565349") == 0 &&
+        strcmp(findNumber("Andrey", testDirectory, lineCount), "89659155656") == 0);
+}
+
+bool findNameTest(Directory testDirectory[], int lineCount) {
+    return (strcmp(findName("89632565349", testDirectory, lineCount), "Nikita") == 0 &&
+        strcmp(findName("89659155656", testDirectory, lineCount), "Andrey") == 0);
+}
+
+bool mainTest(void) {
+    Directory testDirectory[100];
+    int lineCount = 0;
+
+    fileReadData("testdata.txt", testDirectory, &lineCount);
+    if (!fileReadDataTest(testDirectory, lineCount)) {
+        printf("Ошибка в функции ReadDataTest\n");
+        return false;
+    }
+
+    if (!findNameTest(testDirectory, lineCount)) {
+        printf("Ошибка в функции findNameTest\n");
+        return false;
+    }
+
+    if (!findNumberTest(testDirectory, lineCount)) {
+        printf("Ошибка в функции findNumberTest\n");
+        return false;
+    }
+    return true;
+}
+
 int main(void) {
     setlocale(LC_ALL, "Russian");
+
+    if (!mainTest()) {
+        printf("Tests failed!!!\n");
+        return;
+    }
+
     solve();
 
     return 0;
