@@ -23,9 +23,11 @@ void fileReadData(const char fileName[], Directory directory[], int* currentLine
     while (!feof(file)) {
         char buffer[100];
         const int readBytes = fscanf(file, "%s", buffer);
+
         if (readBytes < 0) {
             break;
         }
+
         if (itIsNumber == 0) {
             strcpy(directory[*currentLineIndex].name, buffer);
             itIsNumber = 1;
@@ -35,9 +37,8 @@ void fileReadData(const char fileName[], Directory directory[], int* currentLine
             itIsNumber = 0;
             ++*currentLineIndex;
         }
-        
-
     }
+
     fclose(file);
 }
 
@@ -58,6 +59,7 @@ void addDataInFile(char filename[], Directory directory[], int lineCount) {
 }
 
 void commands(void) {
+
     printf("0 - выйти\n");
     printf("1 - добавить запись (имя и телефон)\n");
     printf("2 - распечатать все имеющиеся записи\n");
@@ -76,8 +78,10 @@ void addDataInDirectory(Directory directory[], int currentLineIndex) {
 
     printf("Введите имя: ");
     scanf("%s", &directory[currentLineIndex].name);
+
     printf("Введите номер телефона: ");
     scanf("%s", &directory[currentLineIndex].number);
+
     printf("Добавление нового контакта прошло успешно\n");
 }
 
@@ -140,6 +144,7 @@ void solve(void) {
         }
         else if (currentCommand == 3) {
             const char name[100];
+
             printf("Введите имя: ");
             scanf("%s", &name);
 
@@ -153,6 +158,7 @@ void solve(void) {
         }
         else if (currentCommand == 4) {
             const char number[100];
+
             printf("Введите номер: ");
             scanf("%s", &number);
 
@@ -176,6 +182,7 @@ bool fileReadDataTest(Directory testDirectory[], int lineCount) {
     if (lineCount != 2) {
         return false;
     }
+
     return strcmp(testDirectory[0].name, "Andrey") == 0 && strcmp(testDirectory[0].number, "89659155656") == 0 &&
         strcmp(testDirectory[1].name, "Nikita") == 0 && strcmp(testDirectory[1].number, "89632565349") == 0;
 }
@@ -209,6 +216,7 @@ bool mainTest(void) {
         printf("Ошибка в функции findNumberTest\n");
         return false;
     }
+
     return true;
 }
 
