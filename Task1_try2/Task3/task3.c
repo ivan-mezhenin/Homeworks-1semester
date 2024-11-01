@@ -21,7 +21,6 @@ void fileReadData(const char fileName[], char *data[]) {
             break;
         }
         strcpy(data, buffer);
-
     }
 
     fclose(file);
