@@ -3,25 +3,25 @@
 
 #define STACK_IS_EMPTY 1
 
-#include "intStack.h"
+#include "charStack.h"
 
-typedef struct IntStackElement {
+typedef struct CharStackElement {
     int value;
-    struct IntStackElement* next;
-} IntStackElement;
+    struct CharStackElement* next;
+} CharStackElement;
 
-typedef struct IntStack {
-    IntStackElement* head;
-} IntStack;
+typedef struct CharStack {
+    CharStackElement* head;
+} CharStack;
 
-IntStack* createIntStack() {
-    IntStack* stack = (IntStack*)malloc(sizeof(IntStack));
+CharStack* createCharStack() {
+    CharStack* stack = (CharStack*)malloc(sizeof(CharStack));
     stack->head = NULL;
     return stack;
 }
 
-void pushInt(IntStack* stack, int value) {
-    IntStackElement* element = malloc(sizeof(IntStackElement));
+void pushChar(CharStack* stack, int value) {
+    CharStackElement* element = malloc(sizeof(CharStackElement));
 
     if (element == NULL) {
         printf("memory allocation error for stack element\n");
@@ -33,25 +33,25 @@ void pushInt(IntStack* stack, int value) {
     }
 }
 
-int popInt(IntStack* stack) {
+int popChar(CharStack* stack) {
     if (stack->head == NULL) {
         printf("Extracting an element from an empty stack\n");
         return STACK_IS_EMPTY;
     }
 
-    IntStackElement* tmp = stack->head;
+    CharStackElement* tmp = stack->head;
     int popedElement = tmp->value;
     stack->head = stack->head->next;
     free(tmp);
     return popedElement;
 }
 
-void destroyIntStack(IntStack* stack) {
+void destroyCharStack(CharStack* stack) {
     free(stack);
 }
 
-void printIntStack(IntStack* stack) {
-    IntStackElement* current = stack->head;
+void printCharStack(CharStack* stack) {
+    CharStackElement* current = stack->head;
 
     puts("Stack: ");
     while (current != NULL) {
