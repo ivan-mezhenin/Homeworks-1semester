@@ -10,13 +10,16 @@ typedef struct CharStack CharStack;
 CharStack* createCharStack(void);
 
 // to push a new element to the stack
-void pushChar(CharStack* stack, int value);
+void pushChar(CharStack* stack, char value);
 
 // to delete element in the head of stack 
-int popChar(CharStack* stack);
+char popChar(CharStack* stack);
 
 // to delete stack and free memory
 void destroyCharStack(CharStack* stack);
 
 // to print stack's elements
 void printCharStack(CharStack* stack);
+
+// to return value in the head of stack
+char topCharStack(CharStack* stack);

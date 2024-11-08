@@ -1,9 +1,10 @@
+#include "intStack.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
 #define STACK_IS_EMPTY 1
-
-#include "intStack.h"
+#define MEMORY_ERROR 2
 
 typedef struct IntStackElement {
     int value;
@@ -14,8 +15,14 @@ typedef struct IntStack {
     IntStackElement* head;
 } IntStack;
 
-IntStack* createIntStack() {
+IntStack* createIntStack(void) {
     IntStack* stack = (IntStack*)malloc(sizeof(IntStack));
+
+    if (stack == NULL) {
+        printf("Memory allocation error for stack\n");
+        return NULL;
+    }
+
     stack->head = NULL;
     return stack;
 }
@@ -25,12 +32,12 @@ void pushInt(IntStack* stack, int value) {
 
     if (element == NULL) {
         printf("memory allocation error for stack element\n");
+        return MEMORY_ERROR;
     }
-    else {
-        element->value = value;
-        element->next = stack->head;
-        stack->head = element;
-    }
+
+    element->value = value;
+    element->next = stack->head;
+    stack->head = element;
 }
 
 int popInt(IntStack* stack) {
@@ -47,6 +54,13 @@ int popInt(IntStack* stack) {
 }
 
 void destroyIntStack(IntStack* stack) {
+    IntStackElement* current = stack->head;
+    IntStackElement* next;
+    while (current != NULL) {
+        next = current->next;
+        free(current);
+        current = next;
+    }
     free(stack);
 }
 
@@ -55,8 +69,15 @@ void printIntStack(IntStack* stack) {
 
     puts("Stack: ");
     while (current != NULL) {
-        printf("%d ", current->value);
+        printf("%c ", current->value);
         current = current->next;
     }
     puts("\n");
+}
+
+char topIntStack(IntStack* stack) {
+    if (stack->head == NULL) {
+        return '\0';
+    }
+    return stack->head->value;
 }
