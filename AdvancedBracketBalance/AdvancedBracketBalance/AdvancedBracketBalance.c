@@ -7,7 +7,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 #define MAX_STRING_LENGTH 100
-#define INPUT_ERROR -1
+#define INPUT_ERROR -3
 #define TESTS_FAILED 1488
 #define TOP_OF_STACK_IS_NULL '\0'
 
