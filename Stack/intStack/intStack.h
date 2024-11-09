@@ -20,3 +20,6 @@ void destroyIntStack(IntStack* stack);
 
 // to print stack's elements
 void printIntStack(IntStack* stack);
+
+// to return value in the head of stack
+int topIntStack(IntStack* stack);

@@ -75,7 +75,7 @@ void printIntStack(IntStack* stack) {
     puts("\n");
 }
 
-char topIntStack(IntStack* stack) {
+int topIntStack(IntStack* stack) {
     if (stack->head == NULL) {
         return '\0';
     }
