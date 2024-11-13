@@ -91,12 +91,15 @@ int calculateTheResultOfTheExpressionInPostfixForm(char postfixString[], int siz
         }
     }
 
-    if (getAmountOfElementsInIntStack(numbers) > 1) {
+    if (amountOfNumbersInStack > 1) {
         *errorCode = INCORRECT_POSTFIX_FORM;
+        destroyIntStack(numbers);
         return INCORRECT_POSTFIX_FORM;
     }
 
-    return topIntStack(numbers);
+    int totalResult = topIntStack(numbers);
+    destroyIntStack(numbers);
+    return totalResult;
 }
 
 bool calculateTheResultOfTheExpressionInPostfixFormCorrectCase(void) {
