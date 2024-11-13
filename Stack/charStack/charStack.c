@@ -81,3 +81,15 @@ char topCharStack(CharStack* stack) {
     }
     return stack->head->value;
 }
+
+int getAmountOfElementsInIntStack(CharStack* stack) {
+    CharStackElement* currentElement = stack->head;
+    int elementsCounter = 0;
+
+    while (currentElement != NULL) {
+        ++elementsCounter;
+        currentElement = currentElement->next;
+    }
+
+    return elementsCounter;
+}
