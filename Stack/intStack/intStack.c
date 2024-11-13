@@ -69,10 +69,10 @@ void printIntStack(IntStack* stack) {
 
     puts("Stack: ");
     while (current != NULL) {
-        printf("%c ", current->value);
+        printf("%d ", current->value);
         current = current->next;
     }
-    puts("\n");
+    printf("\n");
 }
 
 int topIntStack(IntStack* stack) {
@@ -80,4 +80,16 @@ int topIntStack(IntStack* stack) {
         return '\0';
     }
     return stack->head->value;
+}
+
+int getAmountOfElementsInIntStack(IntStack* stack){
+    IntStackElement* currentElement = stack->head;
+    int elementsCounter = 0;
+
+    while (currentElement != NULL) {
+        ++elementsCounter;
+        currentElement = currentElement->next;
+    }
+
+    return elementsCounter;
 }

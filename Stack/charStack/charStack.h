@@ -23,3 +23,7 @@ void printCharStack(CharStack* stack);
 
 // to return value in the head of stack
 char topCharStack(CharStack* stack);
+
+// to return amount of elements in stack
+int getAmountOfElementsInIntStack(CharStack* stack);
+

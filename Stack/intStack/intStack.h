@@ -23,3 +23,6 @@ void printIntStack(IntStack* stack);
 
 // to return value in the head of stack
 int topIntStack(IntStack* stack);
+
+//to return amount of elements in stack
+int getAmountOfElementsInIntStack(IntStack* stack);
