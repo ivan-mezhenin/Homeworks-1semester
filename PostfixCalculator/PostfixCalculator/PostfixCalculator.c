@@ -41,7 +41,6 @@ int operationWithNumbers(IntStack* stack, char operation, int* errorCode) {
 
         return number2 / number1;
     }
-
 }
 
 int calculateTheResultOfTheExpressionInPostfixForm(char postfixString[], int size,  int* errorCode) {
@@ -66,6 +65,7 @@ int calculateTheResultOfTheExpressionInPostfixForm(char postfixString[], int siz
             }
 
             nextSymbol = postfixString[i + 2];
+
             if (amountOfNumbersInStack == 2) {
                 if (nextSymbol == '-' || nextSymbol == '+' || nextSymbol == '*' || nextSymbol == '/') {
                     pushInt(numbers, currentSymbol - '0');
@@ -80,11 +80,9 @@ int calculateTheResultOfTheExpressionInPostfixForm(char postfixString[], int siz
                 pushInt(numbers, currentSymbol - '0');
                 ++amountOfNumbersInStack;
             }
-            
         }
 
         if (currentSymbol == '-' || currentSymbol == '+' || currentSymbol == '*' || currentSymbol == '/') {
-
             pushInt(numbers, operationWithNumbers(numbers, currentSymbol, errorCode));
             if (*errorCode != 0) {
                 return *errorCode;
@@ -128,6 +126,7 @@ bool calculateTheResultOfTheExpressionInPostfixFormCorrectCase(void) {
         printf("Test (%s) failed\n", testData3);
         return false;
     }
+
     return true;
 }
 
@@ -155,6 +154,7 @@ bool calculateTheResultOfTheExpressionInPostfixFormIncorrectCase(void) {
         printf("Test (%s) failed\n", testData3);
         return false;
     }
+
     return true;
 }
 
@@ -175,7 +175,7 @@ int main(void) {
     puts("Enter expression in postfix form: ");
     gets_s(postfixString, MAX_STRING_SIZE);
 
-    int result = calculateTheResultOfTheExpressionInPostfixForm(postfixString, strlen(postfixString), & errorCode);
+    int result = calculateTheResultOfTheExpressionInPostfixForm(postfixString, strlen(postfixString), &errorCode);
 
     if (errorCode == 0) {
         printf("Result: %d\n", result);
@@ -188,7 +188,6 @@ int main(void) {
         printf("Division by zero\n");
         return errorCode;
     }
-
 
     return 0;
 }
