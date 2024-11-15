@@ -111,7 +111,6 @@ bool convertExpressionFromInfixFormToPostfixTest(void) {
         return false;
     }
 
-
     return true;
 }
 
@@ -129,6 +128,7 @@ int main(void) {
     gets_s(infixExpression, MAX_STRING_SIZE);
 
     convertExpressionFromInfixFormToPostfix(infixExpression, strlen(infixExpression), postfixExpression, &errorCode);
+
     if (errorCode == 0) {
         printExpressionWithSpaces(postfixExpression, strlen(postfixExpression));
     }
@@ -137,5 +137,5 @@ int main(void) {
         return INCORRECT_EXPRESSION;
     }
     
-
+    return 0;
 }
