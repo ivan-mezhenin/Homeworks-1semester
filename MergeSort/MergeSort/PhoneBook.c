@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "PhoneBook.h"
 
 #include <stdio.h>
@@ -6,7 +5,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-
+#define _CRT_SECURE_NO_WARNINGS
 #define MAX_DATA_SIZE 100
 #define ALLOCATION_PHONEBOOK_ERROR -1
 #define POINTER_IS_NULL -2
@@ -28,6 +27,7 @@ PhoneBook* createPhoneBook(int* errorCode) {
         *errorCode = ALLOCATION_PHONEBOOK_ERROR;
         return NULL;
     }
+
     return phoneBook;
 }
 
@@ -38,12 +38,9 @@ bool isPhoneBookEmpty(PhoneBook* phoneBook, int* errorCode) {
     }
 
     return phoneBook->head == NULL;
-
 }
 
 PhoneBookElement* lastPhoneBookElement(PhoneBook* phonebook, int* errorCode) {
-
-
     if (phonebook == NULL || phonebook->head == NULL) {
         *errorCode = EMPTY_PHONEBOOK;
         return NULL;
@@ -53,6 +50,7 @@ PhoneBookElement* lastPhoneBookElement(PhoneBook* phonebook, int* errorCode) {
     while (currentElement->next != NULL) {
         currentElement = currentElement->next;
     }
+
     return currentElement;
 }
 
@@ -70,12 +68,12 @@ void addNewPhoneBookElement(PhoneBook* phoneBook, const char* name, const char* 
 
     if (isPhoneBookEmpty(phoneBook, errorCode)) {
         phoneBook->head = newElement;
-
     }
     else {
         PhoneBookElement* lastElement = lastPhoneBookElement(phoneBook, errorCode);
         lastElement->next = newElement;
     }
+
     newElement->next = NULL;
 }
 
@@ -91,7 +89,6 @@ void printPhoneBook(PhoneBook* phoneBook) {
             currentElement = currentElement->next;
         }
     }
-
 }
 
 void deletePhonebook(PhoneBook* phonebook) {
@@ -114,12 +111,14 @@ void merge(PhoneBook* phoneBook, int leftBorderIndex, int middleIndex, int right
     int leftIndex = leftBorderIndex;
     int rightIndex = middleIndex;
     PhoneBookElement* current = phoneBook->head;
+
     for (int i = 0; i < leftIndex; ++i) {
         current = current->next;
-
     }
+
     PhoneBookElement* leftSubPhoneBookELement = current;
     PhoneBookElement* rightSubPhoneBookElement = NULL;
+
     for (int i = leftIndex; i < middleIndex; ++i) {
         current = current->next;
     }
@@ -129,7 +128,6 @@ void merge(PhoneBook* phoneBook, int leftBorderIndex, int middleIndex, int right
     PhoneBook* sortedPhoneBook = createPhoneBook(&errorCode3);
 
     while (leftIndex < middleIndex && rightIndex < rightBorderIndex) {
-
         if (comparisonPhoneBookElements(leftSubPhoneBookELement, rightSubPhoneBookElement, parameter) > 0) {
             addNewPhoneBookElement(sortedPhoneBook, rightSubPhoneBookElement->name, rightSubPhoneBookElement->number, &errorCode3);
             ++rightIndex;
@@ -140,8 +138,8 @@ void merge(PhoneBook* phoneBook, int leftBorderIndex, int middleIndex, int right
             ++leftIndex;
             leftSubPhoneBookELement = leftSubPhoneBookELement->next;
         }
-
     }
+
     while (leftIndex < middleIndex) {
         addNewPhoneBookElement(sortedPhoneBook, leftSubPhoneBookELement->name, leftSubPhoneBookELement->number, &errorCode3);
         ++leftIndex;
@@ -155,23 +153,22 @@ void merge(PhoneBook* phoneBook, int leftBorderIndex, int middleIndex, int right
     }
 
     current = phoneBook->head;
-
-
     for (int i = 0; i < leftBorderIndex; ++i) {
         current = current->next;
     }
 
     for (int i = leftBorderIndex; i < rightBorderIndex; ++i) {
-        strcpy_s(current->name,100, sortedPhoneBook->head->name);
-        strcpy_s(current->number,100, sortedPhoneBook->head->number);
+        strcpy_s(current->name, MAX_DATA_SIZE, sortedPhoneBook->head->name);
+        strcpy_s(current->number, MAX_DATA_SIZE, sortedPhoneBook->head->number);
 
         current = current->next;
         PhoneBookElement* sortedPhoneBookCurrentHead = sortedPhoneBook->head;
         sortedPhoneBook->head = sortedPhoneBook->head->next;
+
         free(sortedPhoneBookCurrentHead);
     }
-    free(sortedPhoneBook);
 
+    free(sortedPhoneBook);
 }
 
 void mergeSort(PhoneBook* phoneBook, int leftIndex, int rightIndex, int parameter) {
