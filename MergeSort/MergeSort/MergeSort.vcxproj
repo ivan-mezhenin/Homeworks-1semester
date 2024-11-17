@@ -127,10 +127,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="MergeSort.c" />
     <ClCompile Include="PhoneBook.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PhoneBook.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data.txt" />
+    <Text Include="testdata1.txt" />
+    <Text Include="testdata2.txt" />
+    <Text Include="testdata3.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

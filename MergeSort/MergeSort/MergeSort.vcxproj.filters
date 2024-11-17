@@ -18,10 +18,27 @@
     <ClCompile Include="PhoneBook.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="MergeSort.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PhoneBook.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="testdata1.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="testdata2.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="testdata3.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

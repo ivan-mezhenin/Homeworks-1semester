@@ -1,9 +1,14 @@
 #pragma once
 #include <stdbool.h>
 
+#define MAX_DATA_SIZE 100
+#define ALLOCATION_PHONEBOOK_ERROR -1
+#define POINTER_IS_NULL -2
+#define EMPTY_PHONEBOOK -3
+
 typedef struct PhoneBook PhoneBook;
 
-typedef struct PhoneBookELement PhoneBookELement;
+typedef struct PhoneBookElement PhoneBookElement;
 
 //return new list
 PhoneBook* createPhoneBook(int* errorCode);

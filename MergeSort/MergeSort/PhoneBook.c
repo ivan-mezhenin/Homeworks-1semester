@@ -6,18 +6,14 @@
 #include <string.h>
 
 #define _CRT_SECURE_NO_WARNINGS
-#define MAX_DATA_SIZE 100
-#define ALLOCATION_PHONEBOOK_ERROR -1
-#define POINTER_IS_NULL -2
-#define EMPTY_PHONEBOOK -3
 
-typedef struct {
+typedef struct PhoneBookElement {
     char name[MAX_DATA_SIZE];
     char number[MAX_DATA_SIZE];
     struct PhoneBookElement* next;
 } PhoneBookElement;
 
-typedef struct {
+typedef struct PhoneBook {
     PhoneBookElement* head;
 } PhoneBook;
 
@@ -89,6 +85,7 @@ void printPhoneBook(PhoneBook* phoneBook) {
             currentElement = currentElement->next;
         }
     }
+    printf("\n");
 }
 
 void deletePhonebook(PhoneBook* phonebook) {
