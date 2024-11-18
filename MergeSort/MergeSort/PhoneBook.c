@@ -193,5 +193,6 @@ bool isPhoneBookSortedByCriteria(PhoneBook* phoneBook, const int criteria, int *
         previosElement = currentElement;
         currentElement = currentElement->next;
     }
+
     return true;
 }

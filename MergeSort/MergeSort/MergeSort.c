@@ -44,10 +44,11 @@ void readDataFromFileToPhoneBook(const char* filename, PhoneBook* phoneBook, int
             ++(*size);
         }
     }
+
     fclose(file);
 }
 
-void mergeSortSolve(const char *filename,PhoneBook* phoneBook, int* errorCode) {
+void mergeSortSolve(const char *filename, PhoneBook* phoneBook, int* errorCode) {
     int phoneBookSize = 0;
     readDataFromFileToPhoneBook(filename, phoneBook, errorCode, &phoneBookSize);
     if (*errorCode != 0) {
