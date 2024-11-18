@@ -6,6 +6,9 @@
 
 #define ERROR_OPEN_FILE -1
 #define INCORRECT_INPUT_CRITERIA -2
+#define TESTS_FAILED -3
+#define SORTING_BY_NAMES 1
+#define SORTING_BY_NUMBERS 2
 
 void readDataFromFileToPhoneBook(const char* filename, PhoneBook* phoneBook, int* errorCode, int* size) {
     FILE* file = fopen(filename, "r");
@@ -72,14 +75,66 @@ void mergeSortSolve(const char *filename,PhoneBook* phoneBook, int* errorCode) {
     deletePhonebook(phoneBook);
 }
 
-//bool mergeSortSolveTests(void) {
-//  
-//}
+bool mergeSortSolveTests(void) {
+    int errorCode1 = 0;
+    int phoneBookLength1 = 0;
+    PhoneBook* testPhoneBook1 = createPhoneBook(&errorCode1);
+    int criteria1 = SORTING_BY_NUMBERS;
+
+    readDataFromFileToPhoneBook("testdata1.txt", testPhoneBook1, &errorCode1, &phoneBookLength1);
+    mergeSort(testPhoneBook1, 0, phoneBookLength1, criteria1);
+
+    if (!isPhoneBookSortedByCriteria(testPhoneBook1, criteria1, errorCode1) || errorCode1 != 0) {
+        printf("Test with data from testdata1.txt failed\n");
+        deletePhonebook(testPhoneBook1);
+        return false;
+    }
+
+    int errorCode2 = 0;
+    int phoneBookLength2 = 0;
+    PhoneBook* testPhoneBook2 = createPhoneBook(&errorCode2);
+    int criteria2 = SORTING_BY_NAMES;
+
+    readDataFromFileToPhoneBook("testdata2.txt", testPhoneBook2, &errorCode2, &phoneBookLength2);
+    mergeSort(testPhoneBook2, 0, phoneBookLength2, criteria2);
+
+    if (!isPhoneBookSortedByCriteria(testPhoneBook2, criteria2, errorCode2) || errorCode2 != 0) {
+        printf("Test with data from testdata2.txt failed\n");
+        deletePhonebook(testPhoneBook2);
+        return false;
+    }
+
+    int errorCode3 = 0;
+    int phoneBookLength3 = 0;
+    PhoneBook* testPhoneBook3 = createPhoneBook(&errorCode3);
+    int criteria3 = SORTING_BY_NUMBERS;
+
+    readDataFromFileToPhoneBook("testdata3.txt", testPhoneBook3, &errorCode3, &phoneBookLength3);
+    mergeSort(testPhoneBook3, 0, phoneBookLength3, criteria3);
+
+    if (!isPhoneBookSortedByCriteria(testPhoneBook3, criteria3, errorCode3) || errorCode3 != 0) {
+        printf("Test with data from testdata3.txt failed\n");
+        deletePhonebook(testPhoneBook3);
+        return false;
+    }
+
+    deletePhonebook(testPhoneBook1);
+    deletePhonebook(testPhoneBook2);
+    deletePhonebook(testPhoneBook3);
+
+    return true;
+}
 
 
 int main(void) {
+    if (!mergeSortSolveTests()) {
+        return TESTS_FAILED;
+    }
+
+    bool k = mergeSortSolveTests();
     int errorCode = 0;
     PhoneBook* phoneBook = createPhoneBook(&errorCode);
+
     if (errorCode == ALLOCATION_PHONEBOOK_ERROR) {
         printf("Error during creation PhoneBook\n");
         return ALLOCATION_PHONEBOOK_ERROR;

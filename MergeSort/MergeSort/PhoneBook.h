@@ -36,3 +36,6 @@ void merge(PhoneBook* phoneBook, int leftBorderIndex, int middleIndex, int right
 
 //sort elements in list
 void mergeSort(PhoneBook* phoneBook, int leftIndex, int rightIndex, int parameter);
+
+//checking sorting of list
+bool isPhoneBookSortedByCriteria(PhoneBook* phoneBook, const int criteria, int* errorCode);

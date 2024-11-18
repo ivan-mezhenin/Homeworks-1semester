@@ -178,3 +178,20 @@ void mergeSort(PhoneBook* phoneBook, int leftIndex, int rightIndex, int paramete
     mergeSort(phoneBook, middleIndex, rightIndex, parameter);
     merge(phoneBook, leftIndex, middleIndex, rightIndex, parameter);
 }
+
+bool isPhoneBookSortedByCriteria(PhoneBook* phoneBook, const int criteria, int *errorCode) {
+    if (isPhoneBookEmpty(phoneBook, errorCode)) {
+        return true;
+    }
+
+    PhoneBookElement* previosElement = phoneBook->head;
+    PhoneBookElement* currentElement = previosElement->next;
+    while (currentElement != NULL) {
+        if (comparisonPhoneBookElements(previosElement, currentElement, criteria) > 0) {
+            return false;
+        }
+        previosElement = currentElement;
+        currentElement = currentElement->next;
+    }
+    return true;
+}
