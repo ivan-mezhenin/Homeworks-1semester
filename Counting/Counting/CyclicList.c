@@ -19,6 +19,7 @@ CyclicList* createCyclicList(int* errorCode) {
         *errorCode = MEMORY_ERROR;
         return NULL;
     }
+
     return list;
 }
 
@@ -30,7 +31,6 @@ bool isCyclicListEmpty(CyclicList* list, int *errorCode) {
 
     return list->head == NULL;
 }
-
 
 void addElementInCyclicList(CyclicList* list, const int value, int* errorCode) {
     if (list == NULL) {
@@ -59,14 +59,14 @@ void addElementInCyclicList(CyclicList* list, const int value, int* errorCode) {
     while (lastElement->next != list->head) {
         lastElement = lastElement->next;
     }
-
     lastElement->next = newElement;
     newElement->next = list->head;
+
+    return;
 }
 
-void printCyclicList(CyclicList* cyclicList, int *errorCode){
-    if (cyclicList == NULL)
-    {
+void printCyclicList(CyclicList* cyclicList, int* errorCode) {
+    if (cyclicList == NULL) {
         *errorCode = LIST_POINTER_IS_NULL;
         return;
     }
@@ -74,12 +74,12 @@ void printCyclicList(CyclicList* cyclicList, int *errorCode){
     CyclicListElement* current = cyclicList->head;
     printf("%d ", current->value);
     current = current->next;
-    while (current != cyclicList->head)
-    {
+    while (current != cyclicList->head) {
         printf("%d ", current->value);
         current = current->next;
     }
     printf("\n");
+
     return;
 }
 
@@ -90,7 +90,6 @@ CyclicListElement* getElementInCyclicList(CyclicList* list, const int index, int
     }
 
     CyclicListElement* currentElement = list->head;
-
     for (int i = 0; i < index - 1; ++i) {
         currentElement = currentElement->next;
     }
@@ -107,10 +106,13 @@ void deleteElementInCyclicList(CyclicList* list, CyclicListElement** element, in
     if (step == 1) {
         CyclicListElement* deletedElement = (*element)->next;
         (*element)->next = deletedElement->next;
+
         if (deletedElement == list->head) {
             list->head = (*element)->next;
         }
+
         (*element) = (*element)->next;  
+
         free(deletedElement);
         return;
     }
@@ -120,11 +122,15 @@ void deleteElementInCyclicList(CyclicList* list, CyclicListElement** element, in
     }
     CyclicListElement* currentElement = (*element)->next;
     (*element)->next = currentElement->next;
+
     if (currentElement == list->head) {
         list->head = (*element)->next;
     }
+
     (*element) = (*element)->next;
+
     free(currentElement);
+    return;
 }
 
 CyclicListElement* getNextElement(CyclicList* list, CyclicListElement* element, int* errorCode) {
@@ -166,6 +172,8 @@ void deleteCyclicList(CyclicList* list, int *errorCode) {
         current = current->next;
         free(deletedElement);
     }
+
     free(current);
     free(list);
+    return;
 }
