@@ -31,4 +31,12 @@ void deleteElementInCyclicList(CyclicList* list, CyclicListElement** element, in
 //delete cyclic list
 void deleteCyclicList(CyclicList* list, int* errorCode);
 
+//return value of list element
+int getElementsValue(CyclicList* list, CyclicListElement* element, int* errorCode);
+
+//return head of cyclic list
+CyclicListElement* getHeadOfCyclicList(CyclicList* list, int* errorCode);
+
+//return next element
+CyclicListElement* getNextElement(CyclicList* list, CyclicListElement* element, int* errorCode);
 

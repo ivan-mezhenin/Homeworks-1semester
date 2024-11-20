@@ -107,6 +107,9 @@ void deleteElementInCyclicList(CyclicList* list, CyclicListElement** element, in
     if (step == 1) {
         CyclicListElement* deletedElement = (*element)->next;
         (*element)->next = deletedElement->next;
+        if (deletedElement == list->head) {
+            list->head = (*element)->next;
+        }
         (*element) = (*element)->next;  
         free(deletedElement);
         return;
@@ -117,8 +120,38 @@ void deleteElementInCyclicList(CyclicList* list, CyclicListElement** element, in
     }
     CyclicListElement* currentElement = (*element)->next;
     (*element)->next = currentElement->next;
+    if (currentElement == list->head) {
+        list->head = (*element)->next;
+    }
     (*element) = (*element)->next;
     free(currentElement);
+}
+
+CyclicListElement* getNextElement(CyclicList* list, CyclicListElement* element, int* errorCode) {
+    if (list == NULL) {
+        *errorCode = LIST_POINTER_IS_NULL;
+        return NULL;
+    }
+
+    return element->next;
+}
+
+CyclicListElement* getHeadOfCyclicList(CyclicList* list, int* errorCode) {
+    if (list == NULL) {
+        *errorCode = LIST_POINTER_IS_NULL;
+        return NULL;
+    }
+
+    return list->head;
+}
+
+int getElementsValue(CyclicList* list, CyclicListElement* element, int* errorCode) {
+    if (list == NULL) {
+        *errorCode = LIST_POINTER_IS_NULL;
+        return LIST_POINTER_IS_NULL;
+    }
+
+    return element->value;
 }
 
 void deleteCyclicList(CyclicList* list, int *errorCode) {
@@ -135,22 +168,4 @@ void deleteCyclicList(CyclicList* list, int *errorCode) {
     }
     free(current);
     free(list);
-}
-
-int main(void) {
-    int errorCode = 0;
-    CyclicList* list = createCyclicLIst(&errorCode);
-    for (int i = 1; i <= 5; ++i) {
-        addElementInCyclicList(list, i, &errorCode);
-    }
-    printCyclicList(list, &errorCode);
-
-    CyclicListElement* current = getElementInCyclicList(list, 0, &errorCode);
-    while (list->head != list->head->next) {
-        deleteElementInCyclicList(list, &current, 3, &errorCode);
-        if (errorCode != 0) {
-            return 0;
-        }
-        printCyclicList(list, &errorCode);
-    }
 }
