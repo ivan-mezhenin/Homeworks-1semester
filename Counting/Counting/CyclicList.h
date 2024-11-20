@@ -2,16 +2,15 @@
 
 #include <stdbool.h>
 
-#define ERROR_CREATING_LIST -1
 #define LIST_POINTER_IS_NULL -2
-#define ERROR_CREATING_LIST_ELEMENT -3
+#define MEMORY_ERROR -3
 
 typedef struct CyclicListElement CyclicListElement;
 
 typedef struct CyclicList CyclicList;
 
 //return pointer on cyclic list
-CyclicList* createCyclicLIst(int* errorCode);
+CyclicList* createCyclicList(int* errorCode);
 
 //checking list is empty or not
 bool isCyclicListEmpty(CyclicList* list, int* errorCode);

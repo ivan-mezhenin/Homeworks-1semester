@@ -13,10 +13,10 @@ typedef struct CyclicList {
     CyclicListElement* head;
 } CyclicList;
 
-CyclicList* createCyclicLIst(int* errorCode) {
+CyclicList* createCyclicList(int* errorCode) {
     CyclicList* list = calloc(1, sizeof(CyclicList));
     if (list == NULL) {
-        *errorCode = ERROR_CREATING_LIST;
+        *errorCode = MEMORY_ERROR;
         return NULL;
     }
     return list;
@@ -40,7 +40,7 @@ void addElementInCyclicList(CyclicList* list, const int value, int* errorCode) {
 
     CyclicListElement* newElement = calloc(1, sizeof(CyclicListElement));
     if (newElement == NULL) {
-        *errorCode = ERROR_CREATING_LIST_ELEMENT;
+        *errorCode = MEMORY_ERROR;
         return;
     }
 
@@ -99,7 +99,7 @@ CyclicListElement* getElementInCyclicList(CyclicList* list, const int index, int
 }
 
 void deleteElementInCyclicList(CyclicList* list, CyclicListElement** element, int step, int* errorCode) {
-    if (list == NULL) {
+    if (list == NULL || *element == NULL || element == NULL) {
         *errorCode = LIST_POINTER_IS_NULL;
         return;
     }
@@ -128,7 +128,7 @@ void deleteElementInCyclicList(CyclicList* list, CyclicListElement** element, in
 }
 
 CyclicListElement* getNextElement(CyclicList* list, CyclicListElement* element, int* errorCode) {
-    if (list == NULL) {
+    if (list == NULL || element == NULL) {
         *errorCode = LIST_POINTER_IS_NULL;
         return NULL;
     }
@@ -146,7 +146,7 @@ CyclicListElement* getHeadOfCyclicList(CyclicList* list, int* errorCode) {
 }
 
 int getElementsValue(CyclicList* list, CyclicListElement* element, int* errorCode) {
-    if (list == NULL) {
+    if (list == NULL || element == NULL) {
         *errorCode = LIST_POINTER_IS_NULL;
         return LIST_POINTER_IS_NULL;
     }
