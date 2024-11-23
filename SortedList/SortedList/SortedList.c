@@ -139,6 +139,22 @@ void deleteSortedListElement(SortedList* list, const int value, int* errorCode) 
     printf("Value %d not in list\n", value);
 }
 
+bool isListSorted(SortedList* list, int* errorCode) {
+    if (list == NULL) {
+        *errorCode = POINTER_IS_NULL;
+        return;
+    }
+
+    SortedListElement* current = list->head;
+    while (current->next != NULL) {
+        if (current->value > current->next->value) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 void deleteSortedList(SortedList* list, int* errorCode) {
     if (list == NULL) {
         *errorCode = POINTER_IS_NULL;

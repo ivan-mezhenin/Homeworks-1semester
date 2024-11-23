@@ -66,6 +66,10 @@ int sortedListTaskSolve(void) {
     return 0;
 }
 
+bool test(void) {
+
+}
+
 int main(void) {
 
     int errorCode = sortedListTaskSolve();
