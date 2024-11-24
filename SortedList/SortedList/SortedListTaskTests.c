@@ -27,11 +27,11 @@ bool test1(void) {
     if (errorCode != 0) {
         return false;
     }
+
     deleteSortedList(list, &errorCode);
     if (errorCode != 0) {
         return false;
     }
-
 
     return isTestCompleted;
 }

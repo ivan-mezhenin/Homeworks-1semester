@@ -2,7 +2,6 @@
 #include "SortedListTaskTests.h"
 
 #include <stdio.h>
-#include <stdbool.h>
 
 #define TESTS_FAILED -1
 
