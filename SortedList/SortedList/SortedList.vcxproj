@@ -129,9 +129,11 @@
   <ItemGroup>
     <ClCompile Include="SortedList.c" />
     <ClCompile Include="SortedListTask.c" />
+    <ClCompile Include="SortedListTaskTests.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SortedList.h" />
+    <ClInclude Include="SortedListTaskTests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

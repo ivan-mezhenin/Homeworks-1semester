@@ -150,6 +150,7 @@ bool isListSorted(SortedList* list, int* errorCode) {
         if (current->value > current->next->value) {
             return false;
         }
+        current = current->next;
     }
 
     return true;

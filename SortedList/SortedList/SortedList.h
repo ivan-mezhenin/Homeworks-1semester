@@ -27,3 +27,6 @@ void deleteSortedListElement(SortedList* list, const int value, int* errorCode);
 
 //delete sorted list 
 void deleteSortedList(SortedList* list, int* errorCode);
+
+//checking list sorted or not
+bool isListSorted(SortedList* list, int* errorCode);

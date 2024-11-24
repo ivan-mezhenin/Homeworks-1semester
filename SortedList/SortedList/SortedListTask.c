@@ -1,7 +1,10 @@
 #include "SortedList.h"
+#include "SortedListTaskTests.h"
 
 #include <stdio.h>
 #include <stdbool.h>
+
+#define TESTS_FAILED -1
 
 void printOperations(void) {
     printf("Programm has some operations:\n");
@@ -66,11 +69,10 @@ int sortedListTaskSolve(void) {
     return 0;
 }
 
-bool test(void) {
-
-}
-
 int main(void) {
+    if (!test()) {
+        return TESTS_FAILED;
+    }
 
     int errorCode = sortedListTaskSolve();
 
