@@ -5,8 +5,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define VALUE_SIZE 100
-
 typedef struct Node {
     int key;
     char* value;
@@ -19,6 +17,11 @@ typedef struct Dictionary {
     Node* root;
 } Dictionary;
 
+typedef enum {
+    left,
+    right
+} Position;
+
 Dictionary* createSearchTree(int* errorCode) {
     Dictionary* tree = calloc(1, sizeof(Dictionary));
     if (tree == NULL) {
@@ -30,16 +33,11 @@ Dictionary* createSearchTree(int* errorCode) {
     return tree;
 }
 
-typedef enum {
-    left,
-    right
-} Position;
-
 bool isTreeEmpty(Dictionary* tree) {
     return tree->root == NULL;
 }
 
-Node* createNode(Node* parent, const int key, const char* value, int* errorCode) {
+Node* createNode(const int key, const char* value, int* errorCode) {
     Node* newNode = calloc(1, sizeof(Node));
     if (newNode == NULL) {
         free(newNode);
@@ -47,24 +45,31 @@ Node* createNode(Node* parent, const int key, const char* value, int* errorCode)
         return NULL;
     }
 
-    newNode->parent = parent;
     newNode->key = key;
-    newNode->value = calloc(sizeof(value), sizeof(char));
+    newNode->value = calloc(sizeof(value) + 1, sizeof(char));
+    if (newNode->value == NULL) {
+        *errorCode = MEMORY_ALLOCATION_ERROR;
+        return NULL;
+    }
+
     strcpy(newNode->value, value);
     return newNode;
 }
 
-void addChild(Node* parent, const int key, const char* value, Position position, int* errorCode) {
-    Node* newNode = createNode(parent, key, value, errorCode);
+void addChild(Node* node, const int key, const char* value, Position position, int* errorCode) {
+    Node* newNode = createNode(key, value, errorCode);
     if (*errorCode != 0) {
         return;
     }
 
+    newNode->parent = node;
+
     if (position == left) {
-        parent->leftChild = newNode;
+        node->leftChild = newNode;
+
         return;
     }
-    parent->rightChild = newNode;
+    node->rightChild = newNode;
 }
 
 void insertValueInDictionary(Node* node, const int key, const char* value, int* errorCode) {
@@ -103,15 +108,7 @@ void addValueInDictionary(Dictionary* tree, const int key, const char* value, in
     }
 
     if (isTreeEmpty(tree)) {
-        Node* newRoot = calloc(1, sizeof(Node));
-        if (newRoot == NULL) {
-            *errorCode = MEMORY_ALLOCATION_ERROR;
-            return;
-        }
-
-        newRoot->key = key;
-        strcpy_s(newRoot->value, VALUE_SIZE, value);
-
+        Node* newRoot = createNode(key, value, errorCode);
         tree->root = newRoot;
         return;
     }
@@ -119,21 +116,20 @@ void addValueInDictionary(Dictionary* tree, const int key, const char* value, in
     insertValueInDictionary(tree->root, key, value, errorCode);
 }
 
-char* get(Node* node, const int key, int* errorCode) {
+Node* getNodeByKey(Node* node, const int key) {
     if (node == NULL) {
-        *errorCode = POINTER_IS_NULL;
         return NULL;
     }
 
     if (node->key == key) {
-        return node->value;
+        return node;
     }
 
-    if (node->key > key) {
-        return get(node->leftChild, key, errorCode);
+    if (key > node->key) {
+        return getNodeByKey(node->rightChild, key);
     }
 
-    return get(node->rightChild, key, errorCode);
+    return getNodeByKey(node->leftChild, key);
 }
 
 char* getValue(Dictionary* tree, const int key, int* errorCode) {
@@ -142,7 +138,7 @@ char* getValue(Dictionary* tree, const int key, int* errorCode) {
         return NULL;
     }
 
-    return get(tree->root, key, errorCode);
+    return getNodeByKey(tree->root, key)->value;
 }
 
 bool findKeyInDictionary(Node* node, const int key, int* errorCode) {
@@ -153,9 +149,10 @@ bool findKeyInDictionary(Node* node, const int key, int* errorCode) {
         return true;
     }
     if (key > node->key) {
-        return findKeyInDictionary(node->rightChild, key, errorCode);
+        findKeyInDictionary(node->rightChild, key, errorCode);
     }
-    return findKeyInDictionary(node->leftChild, key, errorCode);
+
+    findKeyInDictionary(node->leftChild, key, errorCode);
 }
 
 bool isKeyInDictionary(Dictionary* tree, const int key, int* errorCode) {
@@ -167,23 +164,148 @@ bool isKeyInDictionary(Dictionary* tree, const int key, int* errorCode) {
     return findKeyInDictionary(tree->root, key, errorCode);
 }
 
-void inorderTraversal(Node* root) {
+void inorderTraversal(struct Node* root) {
     if (root != NULL) {
-        inorderTraversal(root->leftChild);
-        printf("%d: %s  ", root->key, root->value);
-        inorderTraversal(root->rightChild);
+        inorderTraversal(root->leftChild);     // Обрабатываем левое поддерево
+        printf("%d ", root->key);        // Выводим корень
+        inorderTraversal(root->rightChild);    // Обрабатываем правое поддерево
     }
 }
 
-int main(void) {
-    int errorCode = 0;
-    Dictionary * tree = createSearchTree(&errorCode);
-    addValueInDictionary(tree, 5, "aboba", &errorCode);
-    addValueInDictionary(tree, 37, "pipipi", &errorCode);
-    addValueInDictionary(tree, 44, "bambamba", &errorCode);
-    addValueInDictionary(tree, 8, "tp24", &errorCode);
-    addValueInDictionary(tree, 1, "andrey", &errorCode);
-    addValueInDictionary(tree, 17, "vanya", &errorCode);
-    inorderTraversal(tree->root);
+Node* getReplacementNode(const Node* node, int *errorCode) {
+    if (node == NULL) {
+        *errorCode = NULL;
+        return NULL;
+    }
 
+    Node* rightmostNodeOnTheLeft = node->leftChild;
+    Node* leftmostNodeOnTheRight = node->rightChild;
+    int leftLength = 1;
+    int rightLength = 1;
+
+    while (rightmostNodeOnTheLeft->rightChild != NULL) {
+        rightmostNodeOnTheLeft = rightmostNodeOnTheLeft->rightChild;
+        ++rightLength;
+    }
+
+    while (leftmostNodeOnTheRight->leftChild != NULL) {
+        leftmostNodeOnTheRight= leftmostNodeOnTheRight->leftChild;
+        ++leftLength;
+    }
+
+    return leftLength > rightLength ? rightmostNodeOnTheLeft : leftmostNodeOnTheRight;
+}
+
+void deleteNode(Node* node, int* errorCode) {
+    if (node == NULL) {
+        *errorCode = POINTER_IS_NULL;
+        return;
+    }
+
+    if (node->leftChild != NULL && node->rightChild != NULL) {
+        Node* newNode = getReplacementNode(node, errorCode);
+        if (*errorCode != 0) {
+            return;
+        }
+
+        node->key = newNode->key;
+        strcpy(node->value, newNode->value);
+
+        free(newNode);
+        return;
+    }
+
+    if (node->leftChild == NULL) {
+        node->rightChild->parent = node->parent;
+
+        if (node->key < node->parent->key) {
+            node->parent->leftChild = node->rightChild;
+        }
+        else {
+            node->parent->rightChild = node->rightChild;
+        }
+    }
+    else {
+        node->leftChild->parent = node->parent;
+
+        if (node->key < node->parent->key) {
+            node->parent->leftChild = node->leftChild;
+        }
+        else {
+            node->parent->rightChild = node->leftChild;
+        }
+    }
+    free(node);
+}
+
+void deleteRoot(Dictionary* tree, int* errorCode){
+    if (tree == NULL) {
+        *errorCode = POINTER_IS_NULL;
+        return;
+    }
+
+    if (tree->root->leftChild != NULL && tree->root->rightChild != NULL){
+        Node* newRoot = getReplacementNode(tree->root, errorCode);
+        if (*errorCode != 0) {
+            return;
+        }
+
+        tree->root->key = newRoot->key;
+        strcpy(tree->root->value, newRoot->value);
+
+        free(newRoot);
+        return;
+    }
+
+    Node* previosRoot = tree->root;
+
+    if (tree->root->leftChild == NULL) {
+        tree->root = tree->root->rightChild;
+    }
+    else {
+        tree->root = tree->root->leftChild;
+    }
+
+    free(previosRoot);
+}
+
+void deleteValue(Dictionary* tree, const int key, int* errorCode) {
+    if (tree == NULL) {
+        *errorCode = POINTER_IS_NULL;
+        return;
+    }
+
+    Node* nodeToDeleted = getNodeByKey(tree->root, key);
+    if (*errorCode != 0) {
+        return;
+    }
+
+    if (isTreeEmpty(tree)) {
+        return;
+    }
+
+    if (nodeToDeleted == tree->root) {
+        deleteRoot(tree, errorCode);
+        return;
+    }
+
+    deleteNode(nodeToDeleted, errorCode);
+}
+
+void deleteChildren(const Node* const node)
+{
+    if (node == NULL)
+    {
+        return;
+    }
+    deleteChildren(node->leftChild);
+    deleteChildren(node->rightChild);
+    free(node->value);
+    free(node);
+}
+
+void deleteBinaryTree(const Dictionary* const tree)
+{
+    deleteChildren(tree->root);
+    free(tree);
 }
