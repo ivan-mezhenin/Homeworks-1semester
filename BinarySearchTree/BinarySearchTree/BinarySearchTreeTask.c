@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #define TESTS_FAILED -3
+#define INPUT_ERROR -1488
 #define MAX_VALUE_SIZE 100
 
 void printOperations(void) {
@@ -30,38 +31,128 @@ int binarySearchTreeTask(void) {
 
     printf("Enter number of operation: \n");
     int operation = 0;
-    scanf_s("%d", &operation);
+    if (scanf("%d", &operation) != 1) {
+        printf("Input error\n");
+        return INPUT_ERROR;
+    }
 
     int key = 0;
     char* value = malloc(sizeof(char)*MAX_VALUE_SIZE);
+    if (value == NULL) {
+        errorCode = MEMORY_ALLOCATION_ERROR;
+        printf("Memory allocation error while creating value\n");
+        return errorCode;
+    }
 
-    while (operation != 0) {
+    bool keyInDictionary = false;
+    bool isOperationEqualZero = false;
 
-        switch (operation){
+    while (!isOperationEqualZero) {
+
+        switch (operation) {
+        case 0: {
+            isOperationEqualZero = true;
+            break;
+        }
         case 1: {
             printf("Enter key: ");
-            scanf_s("%d", &key);
+            if (scanf("%d", &key) <= 0) {
+                printf("Input error\n");
+                return INPUT_ERROR;
+            }
             printf("Enter value: ");
-            int result = scanf("%s", value);
+            if (scanf("%s", value) <= 0) {
+                printf("Input error\n");
+                return INPUT_ERROR;
+            }
             addValueInDictionary(dictionary, key, value, &errorCode);
+            if (errorCode == POINTER_IS_NULL) {
+                printf("Passing a null pointer while adding value in dictionary\n");
+                return errorCode;
+            }
+            else if (errorCode == MEMORY_ALLOCATION_ERROR) {
+                printf("Memory allocation error while adding value in dictionary\n");
+            }
+
+            printf("Value %s was added in dictionary by key %d\n", value, key);
             break;
         }
         case 2: {
             printf("Enter key: ");
-            scanf_s("%d", &key);
+            if (scanf("%d", &key) <= 0) {
+                printf("Input error\n");
+                return INPUT_ERROR;
+            }
+
             value = getValue(dictionary, key, &errorCode);
+            if (errorCode == POINTER_IS_NULL) {
+                printf("Passing a null pointer while getting value from dictionary\n");
+                return errorCode;
+            }
+            else if (errorCode == KEY_NOT_FOUND) {
+                printf("No such key in dictionary. Try again\n");
+                errorCode = 0;
+                break;
+            }
+
             printf("Value by key: %s\n", value);
             break;
         }
+        case 3: {
+            printf("Enter key: ");
+            if (scanf("%d", &key) <= 0) {
+                printf("Input error\n");
+                return INPUT_ERROR;
+            }
 
+            keyInDictionary = isKeyInDictionary(dictionary, key, &errorCode);
+            if (errorCode == POINTER_IS_NULL) {
+                printf("Passing a null pointer while checking presence of key in dictionary\n");
+                return errorCode;
+            }
 
+            if (keyInDictionary) {
+                printf("Key is in the dictionary\n");
+            }
+            else {
+                printf("Key is not in the dictionary\n");
+            }
+            break;
         }
+        case 4: {
+            printf("Enter key: ");
+            if (scanf("%d", &key) <= 0) {
+                printf("Input error\n");
+                return INPUT_ERROR;
+            }
 
-        scanf("%d", &operation);
+            deleteValue(dictionary, key, &errorCode);
+            if (errorCode == POINTER_IS_NULL) {
+                printf("Passing a null pointer while removal value from dictionary\n");
+                return errorCode;
+            }
+            else if (errorCode == KEY_NOT_FOUND) {
+                printf("No such key in dictionary. Try again\n");
+                errorCode = 0;
+            }
+            else {
+                printf("Key and value by key were deleted\n");
+            }
+
+            break;
+        }
+        default: {
+            printf("Incorrect operation. Try again...\n");
+            break;
+        }
+        }
+        if (scanf("%d", &operation) != 1) {
+            printf("Input error\n");
+            return INPUT_ERROR;
+        }
     }
 
     return 0;
-
 }
 
 
@@ -71,5 +162,5 @@ int main(void) {
     //}
 
     int errorCode = binarySearchTreeTask();
-
+    return errorCode;
 }

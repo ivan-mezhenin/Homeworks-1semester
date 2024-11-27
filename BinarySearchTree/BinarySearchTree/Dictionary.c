@@ -56,7 +56,7 @@ Node* createNode(const int key, char* value, int* errorCode) {
     return newNode;
 }
 
-void addChild(Node* node, const int key, const char* value, Position position, int* errorCode) {
+void addChild(Node* node, const int key, char* value, Position position, int* errorCode) {
     Node* newNode = createNode(key, value, errorCode);
     if (*errorCode != 0) {
         return;
@@ -101,7 +101,7 @@ void insertValueInDictionary(Node* node, const int key, const char* value, int* 
     }
 }
 
-void addValueInDictionary(Dictionary* tree, const int key, const char* value, int* errorCode) {
+void addValueInDictionary(Dictionary* tree, const int key, char* value, int* errorCode) {
     if (tree == NULL) {
         *errorCode = POINTER_IS_NULL;
         return;
@@ -277,6 +277,11 @@ void deleteValue(Dictionary* tree, const int key, int* errorCode) {
 
     Node* nodeToDeleted = getNodeByKey(tree->root, key);
     if (*errorCode != 0) {
+        return;
+    }
+
+    if (getNodeByKey == NULL) {
+        *errorCode = KEY_NOT_FOUND;
         return;
     }
 

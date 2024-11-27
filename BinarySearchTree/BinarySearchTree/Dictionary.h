@@ -18,6 +18,9 @@ Dictionary* createDictionary(int* errorCode);
 //return tree empty or not
 bool isDictionaryEmpty(Dictionary* tree);
 
+//return key in dictionary or not
+bool isKeyInDictionary(Dictionary* tree, const int key, int* errorCode);
+
 // add new node in tree
 void addValueInDictionary(Dictionary* tree, const int key, const char* value, int* errorCode);
 
