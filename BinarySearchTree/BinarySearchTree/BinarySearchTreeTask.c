@@ -1,4 +1,5 @@
 #include "Dictionary.h"
+#include "BinarySearchTreeTest.h"
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -151,15 +152,16 @@ int binarySearchTreeTask(void) {
             return INPUT_ERROR;
         }
     }
-
+    deleteDictionary(dictionary);
+    free(value);
     return 0;
 }
 
 
 int main(void) {
-    //if (!test()) {
-    //    return TESTS_FAILED;
-    //}
+    if (!test()) {
+        return TESTS_FAILED;
+    }
 
     int errorCode = binarySearchTreeTask();
     return errorCode;

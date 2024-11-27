@@ -19,16 +19,16 @@ Dictionary* createDictionary(int* errorCode);
 bool isDictionaryEmpty(Dictionary* tree);
 
 //return key in dictionary or not
-bool isKeyInDictionary(Dictionary* tree, const int key, int* errorCode);
+bool isKeyInDictionary(Dictionary* tree, int key, int* errorCode);
 
 // add new node in tree
-void addValueInDictionary(Dictionary* tree, const int key, const char* value, int* errorCode);
+void addValueInDictionary(Dictionary* tree, int key, char* value, int* errorCode);
 
 //return value by key
-char* getValue(Dictionary* tree, const int key, int* errorCode);
+char* getValue(Dictionary* tree, int key, int* errorCode);
 
 //delete value by key
-void deleteValue(Dictionary* tree, const int key, int* errorCode);
+void deleteValue(Dictionary* tree, int key, int* errorCode);
 
 //destroy tree <3
-void deleteDictionary(const Dictionary* const tree);
+void deleteDictionary(Dictionary* tree);

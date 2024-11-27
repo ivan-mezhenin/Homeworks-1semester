@@ -128,9 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BinarySearchTreeTask.c" />
+    <ClCompile Include="BinarySearchTreeTest.c" />
     <ClCompile Include="Dictionary.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinarySearchTreeTest.h" />
     <ClInclude Include="Dictionary.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
