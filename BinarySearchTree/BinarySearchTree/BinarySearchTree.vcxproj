@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BinarySearchTreeTask.c" />
     <ClCompile Include="Dictionary.c" />
   </ItemGroup>
   <ItemGroup>

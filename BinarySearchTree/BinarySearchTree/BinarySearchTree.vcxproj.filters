@@ -18,6 +18,9 @@
     <ClCompile Include="Dictionary.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="BinarySearchTreeTask.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dictionary.h">
