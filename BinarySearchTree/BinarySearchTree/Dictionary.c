@@ -66,7 +66,6 @@ void addChild(Node* node, int key, char* value, Position position, int* errorCod
 
     if (position == left) {
         node->leftChild = newNode;
-
         return;
     }
 
@@ -152,9 +151,11 @@ bool findKeyInDictionary(Node* node, int key, int* errorCode) {
     if (node == NULL) {
         return false;
     }
+
     if (node->key == key) {
         return true;
     }
+
     if (key > node->key) {
         return findKeyInDictionary(node->rightChild, key, errorCode);
     }
@@ -255,16 +256,17 @@ void deleteNode(Node* node, int* errorCode) {
             }
         }
     } 
+
     free(node);
 }
 
-void deleteRoot(Dictionary* tree, int* errorCode){
+void deleteRoot(Dictionary* tree, int* errorCode) {
     if (tree == NULL) {
         *errorCode = POINTER_IS_NULL;
         return;
     }
 
-    if (tree->root->leftChild != NULL && tree->root->rightChild != NULL){
+    if (tree->root->leftChild != NULL && tree->root->rightChild != NULL) {
         Position position = left;
         Node* newRoot = getReplacementNode(tree->root, errorCode, &position);
         if (*errorCode != 0) {
@@ -281,7 +283,6 @@ void deleteRoot(Dictionary* tree, int* errorCode){
             newRoot->parent->rightChild = NULL;
         }
         
-
         free(newRoot->value);
         free(newRoot);
         return;

@@ -20,7 +20,6 @@ void printOperations(void) {
 }
 
 int binarySearchTreeTask(void) {
-
     int errorCode = 0;
     Dictionary* dictionary = createDictionary(&errorCode);
     if (errorCode == MEMORY_ALLOCATION_ERROR) {
@@ -61,11 +60,13 @@ int binarySearchTreeTask(void) {
                 printf("Input error\n");
                 return INPUT_ERROR;
             }
+
             printf("Enter value: ");
             if (scanf("%s", value) <= 0) {
                 printf("Input error\n");
                 return INPUT_ERROR;
             }
+
             addValueInDictionary(dictionary, key, value, &errorCode);
             if (errorCode == POINTER_IS_NULL) {
                 printf("Passing a null pointer while adding value in dictionary\n");
@@ -147,16 +148,17 @@ int binarySearchTreeTask(void) {
             break;
         }
         }
+        
         if (scanf("%d", &operation) != 1) {
             printf("Input error\n");
             return INPUT_ERROR;
         }
     }
+
     deleteDictionary(dictionary);
     free(value);
     return 0;
 }
-
 
 int main(void) {
     if (!test()) {
