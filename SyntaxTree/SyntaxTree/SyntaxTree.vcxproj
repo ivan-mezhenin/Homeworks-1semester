@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SyntaxTree.c" />
+    <ClCompile Include="SyntaxTreeTask.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SyntaxTree.h" />

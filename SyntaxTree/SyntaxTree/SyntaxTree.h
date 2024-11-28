@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdio.h>
+
 #define MEMORY_ALLOCATION_ERROR -14141
 
 typedef struct SyntaxTree SyntaxTree;

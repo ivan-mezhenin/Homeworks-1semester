@@ -18,6 +18,9 @@
     <ClCompile Include="SyntaxTree.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="SyntaxTreeTask.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SyntaxTree.h">
