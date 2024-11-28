@@ -11,9 +11,9 @@ typedef struct SyntaxTree {
 } SyntaxTree;
 
 void buildSyntaxTree(SyntaxTree** root, FILE* file, int* errorCode) {
-
     while (!feof(file)) {
         char currentSymbol = fgetc(file);
+
         switch (currentSymbol) {
         case '(':
         case ' ':
@@ -30,6 +30,7 @@ void buildSyntaxTree(SyntaxTree** root, FILE* file, int* errorCode) {
                 free(root);
                 return;
             }
+
             (*root)->operation = currentSymbol;
             buildSyntaxTree(&(*root)->leftChild, file, errorCode);
             buildSyntaxTree(&(*root)->rightChild, file, errorCode);
@@ -42,11 +43,11 @@ void buildSyntaxTree(SyntaxTree** root, FILE* file, int* errorCode) {
                 free(root);
                 return;
             }
+
             ungetc(currentSymbol, file);
             fscanf_s(file, "%d", &(*root)->value);
             return;
         }
-
         }
     }
 }
