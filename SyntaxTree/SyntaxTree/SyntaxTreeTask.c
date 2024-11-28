@@ -1,10 +1,16 @@
 #include "SyntaxTree.h"
+#include "SyntaxTreeTest.h"
 
 #include <stdio.h>
 
 #define FILE_NOT_FOUND -52
+#define TESTS_FAILED -323
 
 int main(void) {
+    if (!test()) {
+        return TESTS_FAILED;
+    }
+
     int errorCode = 0;
     FILE* file = fopen("data.txt", "r");
     if (file == NULL) {

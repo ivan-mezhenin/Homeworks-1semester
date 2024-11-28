@@ -129,12 +129,17 @@
   <ItemGroup>
     <ClCompile Include="SyntaxTree.c" />
     <ClCompile Include="SyntaxTreeTask.c" />
+    <ClCompile Include="SyntaxTreeTest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SyntaxTree.h" />
+    <ClInclude Include="SyntaxTreeTest.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data.txt" />
+    <Text Include="testdata1.txt" />
+    <Text Include="testdata2.txt" />
+    <Text Include="testdata3.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
