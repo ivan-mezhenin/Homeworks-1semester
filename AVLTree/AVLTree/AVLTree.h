@@ -1,0 +1,6 @@
+#pragma once
+
+#define _CRT_SECURE_NO_WARNINGS
+#define POINTER_IS_NULL -17
+#define MEMORY_ALLOCATION_ERROR -141
+#define KEY_NOT_FOUND 242
