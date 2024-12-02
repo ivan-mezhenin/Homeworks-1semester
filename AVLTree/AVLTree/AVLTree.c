@@ -187,6 +187,7 @@ void insertValueInAVLTree(Node* node, const char* key, const char* value, int* e
         insertValueInAVLTree(node->leftChild, key, value, errorCode);
         node->leftChild = balance(node->leftChild, errorCode);
     }
+    
     if (strcmp(key, node->key) > 0) {
         if (node->rightChild == NULL) {
             addChild(node, key, value, right, errorCode);
@@ -299,7 +300,6 @@ void deleteNode(Node** node, const char * key, int* errorCode) {
         updateHeight(*node);
         *node = balance(*node, errorCode);
     }
-
     else {
         if ((*node)->leftChild == NULL && (*node)->rightChild == NULL) {
             free((*node)->key);

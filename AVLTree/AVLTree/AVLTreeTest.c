@@ -70,7 +70,6 @@ bool test2(void) {
     deleteValue(tree, "j", &errorCode);
     deleteValue(tree, "dafa", &errorCode);
 
-
     passed = passed && !isKeyInAVLTree(tree, "k", &errorCode) && !isKeyInAVLTree(tree, "a", &errorCode) &&
         !isKeyInAVLTree(tree, "j", &errorCode) && !isKeyInAVLTree(tree, "dafa", &errorCode);
 
