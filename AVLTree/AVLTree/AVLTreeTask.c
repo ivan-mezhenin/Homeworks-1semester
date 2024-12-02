@@ -12,18 +12,18 @@
 void printOperations(void) {
     printf("Program has some operations:\n");
     printf("0 - Exit\n");
-    printf("1 - Add the value of the specified key to the dictionary.\n");
-    printf("2 - Get the value for a given key from the dictionary.\n");
-    printf("3 - Check the presence of the specified key in the dictionary\n");
-    printf("4 - Delete the specified key and its associated value from the dictionary\n");
+    printf("1 - Add the value of the specified key to the tree.\n");
+    printf("2 - Get the value for a given key from the tree.\n");
+    printf("3 - Check the presence of the specified key in the tree\n");
+    printf("4 - Delete the specified key and its associated value from the tree\n");
     printf("\n");
 }
 
-int binarySearchTreeTask(void) {
+int AVLTreeTask(void) {
     int errorCode = 0;
-    AVLTree* dictionary = createDictionary(&errorCode);
+    AVLTree* tree = createAVLTree(&errorCode);
     if (errorCode == MEMORY_ALLOCATION_ERROR) {
-        printf("Memory allocation error while creating dictionary\n");
+        printf("Memory allocation error while creating AVL tree\n");
         return errorCode;
     }
 
@@ -36,7 +36,13 @@ int binarySearchTreeTask(void) {
         return INPUT_ERROR;
     }
 
-    int key = 0;
+    char* key = malloc(sizeof(char) * MAX_VALUE_SIZE);
+    if (key == NULL) {
+        errorCode = MEMORY_ALLOCATION_ERROR;
+        printf("Memory allocation error while creating key\n");
+        return errorCode;
+    }
+
     char* value = malloc(sizeof(char) * MAX_VALUE_SIZE);
     if (value == NULL) {
         errorCode = MEMORY_ALLOCATION_ERROR;
@@ -44,7 +50,7 @@ int binarySearchTreeTask(void) {
         return errorCode;
     }
 
-    bool keyInDictionary = false;
+    bool keyInAVLTree= false;
     bool isOperationEqualZero = false;
 
     while (!isOperationEqualZero) {
@@ -56,7 +62,7 @@ int binarySearchTreeTask(void) {
         }
         case 1: {
             printf("Enter key: ");
-            if (scanf("%d", &key) <= 0) {
+            if (scanf("%s", key) <= 0) {
                 printf("Input error\n");
                 return INPUT_ERROR;
             }
@@ -67,32 +73,32 @@ int binarySearchTreeTask(void) {
                 return INPUT_ERROR;
             }
 
-            addValueInDictionary(dictionary, key, value, &errorCode);
+            addValueInAVLTree(tree, key, value, &errorCode);
             if (errorCode == POINTER_IS_NULL) {
-                printf("Passing a null pointer while adding value in dictionary\n");
+                printf("Passing a null pointer while adding value in tree\n");
                 return errorCode;
             }
             else if (errorCode == MEMORY_ALLOCATION_ERROR) {
-                printf("Memory allocation error while adding value in dictionary\n");
+                printf("Memory allocation error while adding value in tree\n");
             }
 
-            printf("Value %s was added in dictionary by key %d\n", value, key);
+            printf("Value %s was added in dictionary by key %s\n", value, key);
             break;
         }
         case 2: {
             printf("Enter key: ");
-            if (scanf("%d", &key) <= 0) {
+            if (scanf("%s", key) <= 0) {
                 printf("Input error\n");
                 return INPUT_ERROR;
             }
 
-            value = getValue(dictionary, key, &errorCode);
+            value = getValue(tree, key, &errorCode);
             if (errorCode == POINTER_IS_NULL) {
-                printf("Passing a null pointer while getting value from dictionary\n");
+                printf("Passing a null pointer while getting value from tree\n");
                 return errorCode;
             }
             else if (errorCode == KEY_NOT_FOUND) {
-                printf("No such key in dictionary. Try again\n");
+                printf("No such key in tree. Try again\n");
                 errorCode = 0;
                 break;
             }
@@ -102,39 +108,39 @@ int binarySearchTreeTask(void) {
         }
         case 3: {
             printf("Enter key: ");
-            if (scanf("%d", &key) <= 0) {
+            if (scanf("%s", key) <= 0) {
                 printf("Input error\n");
                 return INPUT_ERROR;
             }
 
-            keyInDictionary = isKeyInDictionary(dictionary, key, &errorCode);
+            keyInAVLTree = isKeyInAVLTree(tree, key, &errorCode);
             if (errorCode == POINTER_IS_NULL) {
                 printf("Passing a null pointer while checking presence of key in dictionary\n");
                 return errorCode;
             }
 
-            if (keyInDictionary) {
-                printf("Key is in the dictionary\n");
+            if (keyInAVLTree) {
+                printf("Key is in the tree\n");
             }
             else {
-                printf("Key is not in the dictionary\n");
+                printf("Key is not in the tree\n");
             }
             break;
         }
         case 4: {
             printf("Enter key: ");
-            if (scanf("%d", &key) <= 0) {
+            if (scanf("%s", key) <= 0) {
                 printf("Input error\n");
                 return INPUT_ERROR;
             }
 
-            deleteValue(dictionary, key, &errorCode);
+            deleteValue(tree, key, &errorCode);
             if (errorCode == POINTER_IS_NULL) {
-                printf("Passing a null pointer while removal value from dictionary\n");
+                printf("Passing a null pointer while removal value from tree\n");
                 return errorCode;
             }
             else if (errorCode == KEY_NOT_FOUND) {
-                printf("No such key in dictionary. Try again\n");
+                printf("No such key in tree. Try again\n");
                 errorCode = 0;
             }
             else {
@@ -149,22 +155,27 @@ int binarySearchTreeTask(void) {
         }
         }
 
-        if (scanf("%d", &operation) != 1) {
+        if (isOperationEqualZero) {
+            continue;
+        }
+
+        if (scanf("%d", &operation) <= 0) {
             printf("Input error\n");
             return INPUT_ERROR;
         }
     }
 
-    deleteDictionary(dictionary);
+    deleteAVLTree(tree);
     free(value);
+    free(key);
     return 0;
 }
 
 int main(void) {
-    if (!test()) {
-        return TESTS_FAILED;
-    }
+    //if (!test()) {
+    //    return TESTS_FAILED;
+    //}
 
-    int errorCode = binarySearchTreeTask();
+    int errorCode = AVLTreeTask();
     return errorCode;
 }

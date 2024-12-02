@@ -16,14 +16,14 @@ AVLTree* createAVLTree(int* errorCode);
 //return tree empty or not
 bool isAVLTreeEmpty(AVLTree* tree);
 
-//return key exist or not
+//return key in tree or not
 bool isKeyInAVLTree(AVLTree* tree, const char *key, int* errorCode);
 
 // add new node in tree
 void addValueInAVLTree(AVLTree* tree, const char* key, const char* value, int* errorCode);
 
 //return value by key
-char* getValue(AVLTree* tree, const char* key, int* errorCode);
+const char* getValue(AVLTree* tree, const char* key, int* errorCode);
 
 //delete value by key
 void deleteValue(AVLTree* tree, const char* key, int* errorCode);

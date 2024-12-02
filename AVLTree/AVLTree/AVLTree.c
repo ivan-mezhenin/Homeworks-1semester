@@ -233,7 +233,7 @@ Node* getNodeByKey(Node* node, const char* key) {
     return getNodeByKey(node->leftChild, key);
 }
 
-const char* getValue(AVLTree* tree, const char* key, int* errorCode) {
+const char* getValue(AVLTree* tree, char* key, int* errorCode) {
     if (tree == NULL) {
         *errorCode = POINTER_IS_NULL;
         return "\0";
@@ -350,27 +350,6 @@ void deleteValue(AVLTree* tree, const char * key, int* errorCode) {
 
     deleteNode(&tree->root, key, errorCode);
 }
-
-int main(void) {
-    int errorCode = 0;
-    AVLTree* tree = createAVLTree(&errorCode);
-    char key1[] = "17", key2[] = "18", key3[] = "19";
-    char val1[] = "ivan", val2[] = "Nikita";
-
-    addValueInAVLTree(tree, "37", val1, &errorCode);
-    addValueInAVLTree(tree, "30", val2, &errorCode);
-    addValueInAVLTree(tree, "54", val2, &errorCode);
-    addValueInAVLTree(tree, "60", val2, &errorCode);
-    addValueInAVLTree(tree, "19", val2, &errorCode);
-
-    deleteValue(tree, "60", &errorCode);
-    deleteValue(tree, "54", &errorCode);
-
-
-    printf("%s", tree->root->leftChild->key);
-
-}
-
 
 void deleteChildren(Node* node) {
     if (node != NULL) {
