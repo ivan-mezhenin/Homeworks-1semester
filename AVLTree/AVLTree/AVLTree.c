@@ -6,7 +6,7 @@
 #include <string.h>
 
 typedef struct Node {
-    int balance;
+    int height;
     const char* key;
     const char* value;
     struct Node* leftChild;
@@ -22,6 +22,21 @@ typedef enum {
     right
 } Position;
 
+int getHeight(Node* node) {
+    return (node == NULL) ? -1 : node->height;
+}
+
+int getBalanceFactor(Node* node) {
+    return getHeight(node->rightChild) - getHeight(node->leftChild);
+}
+
+void updateHeight(Node* node) {
+    int lengthOfLeftSubtree = getHeight(node->leftChild);
+    int lengthOfRightSubtree = getHeight(node->rightChild);
+
+    node->height = ((lengthOfLeftSubtree > lengthOfRightSubtree) ? lengthOfLeftSubtree : lengthOfRightSubtree) + 1;
+}
+
 AVLTree* createAVLTree(int* errorCode) {
     AVLTree* tree = calloc(1, sizeof(AVLTree));
     if (tree == NULL) {
@@ -34,6 +49,77 @@ AVLTree* createAVLTree(int* errorCode) {
 
 bool isAVLTreeEmpty(AVLTree* tree) {
     return tree->root == NULL;
+}
+
+//     a                  b    
+//   /   \              /   \  
+//  L     b    -->     a     R 
+//      /   \        /   \     
+//     C     R      L     C    
+
+Node* rotateLeft(Node* a) {
+    Node* b = a->rightChild;
+    Node* c = b->leftChild;
+    b->leftChild = a;
+    a->rightChild = c;
+    updateHeight(a);
+    updateHeight(b);
+
+    return b;
+}
+
+//        a               b       
+//      /   \           /   \     
+//     b     R    -->  L     a    
+//   /   \                 /   \  
+//  L     C               C     R 
+
+Node* rotateRight(Node* a) {
+    Node* b = a->leftChild;
+    Node* c = b->rightChild;
+    b->rightChild = a;
+    a->leftChild = c;
+    updateHeight(a);
+    updateHeight(b);
+
+    return b;
+}
+
+Node* bigRotateLeft(Node* node) {
+    node->rightChild = rotateRight(node->rightChild);
+    return rotateLeft(node);
+}
+
+Node* bigRotateRight(Node* node) {
+    node->leftChild = rotateLeft(node->leftChild);
+    return rotateRight(node);
+}
+
+Node* balance(Node* node, int* errorCode) {
+    if (node == NULL) {
+        *errorCode = POINTER_IS_NULL;
+        return NULL;
+    }
+
+    updateHeight(node);
+
+    if (getBalanceFactor(node) == 2) {
+        if (getBalanceFactor(node->rightChild) > 0) {
+            return rotateLeft(node);
+        }
+
+        return bigRotateLeft(node);
+    }
+
+    if (getBalanceFactor(node) == -2) {
+        if (getBalanceFactor(node->leftChild) < 0) {
+            return rotateRight(node);
+        }
+
+        return bigRotateRight(node);
+    }
+
+    return node;
 }
 
 Node* createNode(const char* key, const char* value, int* errorCode) {
@@ -97,6 +183,7 @@ void insertValueInAVLTree(Node* node, const char* key, const char* value, int* e
         }
 
         insertValueInAVLTree(node->leftChild, key, value, errorCode);
+        node->leftChild = balance(node->leftChild, errorCode);
     }
     if (strcmp(key, node->key) > 0) {
         if (node->rightChild == NULL) {
@@ -105,6 +192,7 @@ void insertValueInAVLTree(Node* node, const char* key, const char* value, int* e
         }
 
         insertValueInAVLTree(node->rightChild, key, value, errorCode);
+        node->rightChild = balance(node->rightChild, errorCode);
     }
 }
 
