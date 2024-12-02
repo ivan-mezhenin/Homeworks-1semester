@@ -213,6 +213,7 @@ void addValueInAVLTree(AVLTree* tree, const char* key, const char* value, int* e
     }
 
     insertValueInAVLTree(tree->root, key, value, errorCode);
+    tree->root = balance(tree->root, errorCode);
 }
 
 
@@ -288,9 +289,13 @@ void deleteNode(Node** node, const char * key, int* errorCode) {
 
     if (strcmp(key, (*node)->key) < 0) {
         deleteNode(&(*node)->leftChild, key, errorCode);
+        updateHeight(*node);
+        *node = balance(*node, errorCode);
     }
     else if (strcmp(key, (*node)->key) > 0) {
         deleteNode(&(*node)->rightChild, key, errorCode);
+        updateHeight(*node);
+        *node = balance(*node, errorCode);
     }
 
     else {
@@ -349,14 +354,20 @@ void deleteValue(AVLTree* tree, const char * key, int* errorCode) {
 int main(void) {
     int errorCode = 0;
     AVLTree* tree = createAVLTree(&errorCode);
-    char key1[] = "abcd", key2[] = "bbcd";
+    char key1[] = "17", key2[] = "18", key3[] = "19";
     char val1[] = "ivan", val2[] = "Nikita";
 
-    addValueInAVLTree(tree, key1, val1, &errorCode);
-    addValueInAVLTree(tree, key2, val2, &errorCode);
-    deleteValue(tree, key2, &errorCode);
-    printf("%s", tree->root->value);
+    addValueInAVLTree(tree, "37", val1, &errorCode);
+    addValueInAVLTree(tree, "30", val2, &errorCode);
+    addValueInAVLTree(tree, "54", val2, &errorCode);
+    addValueInAVLTree(tree, "60", val2, &errorCode);
+    addValueInAVLTree(tree, "19", val2, &errorCode);
 
+    deleteValue(tree, "60", &errorCode);
+    deleteValue(tree, "54", &errorCode);
+
+
+    printf("%s", tree->root->leftChild->key);
 
 }
 

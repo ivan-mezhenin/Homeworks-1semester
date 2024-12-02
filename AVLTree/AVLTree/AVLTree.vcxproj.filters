@@ -18,9 +18,15 @@
     <ClCompile Include="AVLTree.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="AVLTreeTask.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AVLTree.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="AVLTreeTest.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
