@@ -50,7 +50,7 @@ int AVLTreeTask(void) {
         return errorCode;
     }
 
-    bool keyInAVLTree= false;
+    bool keyInAVLTree = false;
     bool isOperationEqualZero = false;
 
     while (!isOperationEqualZero) {
@@ -172,9 +172,9 @@ int AVLTreeTask(void) {
 }
 
 int main(void) {
-    //if (!test()) {
-    //    return TESTS_FAILED;
-    //}
+    if (!test()) {
+        return TESTS_FAILED;
+    }
 
     int errorCode = AVLTreeTask();
     return errorCode;

@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="AVLTree.c" />
     <ClCompile Include="AVLTreeTask.c" />
+    <ClCompile Include="AVLTreeTest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AVLTree.h" />

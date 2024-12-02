@@ -21,6 +21,9 @@
     <ClCompile Include="AVLTreeTask.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="AVLTreeTest.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AVLTree.h">

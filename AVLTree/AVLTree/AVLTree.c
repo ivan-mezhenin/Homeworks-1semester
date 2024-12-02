@@ -131,12 +131,14 @@ Node* createNode(const char* key, const char* value, int* errorCode) {
 
     newNode->value = malloc(strlen(value) + 1);
     if (newNode->value == NULL) {
+        free(newNode);
         *errorCode = MEMORY_ALLOCATION_ERROR;
         return NULL;
     }
 
     newNode->key = malloc(strlen(key) + 1);
     if (newNode->key == NULL) {
+        free(newNode);
         *errorCode = MEMORY_ALLOCATION_ERROR;
         return NULL;
     }
@@ -233,7 +235,7 @@ Node* getNodeByKey(Node* node, const char* key) {
     return getNodeByKey(node->leftChild, key);
 }
 
-const char* getValue(AVLTree* tree, char* key, int* errorCode) {
+const char* getValue(AVLTree* tree, const char* key, int* errorCode) {
     if (tree == NULL) {
         *errorCode = POINTER_IS_NULL;
         return "\0";
@@ -242,7 +244,7 @@ const char* getValue(AVLTree* tree, char* key, int* errorCode) {
     Node* foundNode = getNodeByKey(tree->root, key);
     if (foundNode == NULL) {
         *errorCode = KEY_NOT_FOUND;
-        return NULL;
+        return "\0";
     }
 
     return foundNode->value;
@@ -331,8 +333,24 @@ void deleteNode(Node** node, const char * key, int* errorCode) {
             return;
         }
 
+        free((*node)->key);
+        free((*node)->value);
+
+        (*node)->value = malloc(strlen(temporaryNode->value) + 1);
+        if ((*node)->value == NULL) {
+            *errorCode = MEMORY_ALLOCATION_ERROR;
+            return;
+        }
+
+        (*node)->key = malloc(strlen(temporaryNode->key) + 1);
+        if ((*node)->key == NULL) {
+            *errorCode = MEMORY_ALLOCATION_ERROR;
+            return;
+        }
+
         strcpy((*node)->key, temporaryNode->key);
         strcpy((*node)->value, temporaryNode->value);
+
         deleteNode(&(*node)->rightChild, temporaryNode->key, errorCode);
     }
 }
