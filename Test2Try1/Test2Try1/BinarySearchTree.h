@@ -18,4 +18,4 @@ void addValueInTree(BinarySearchTree* tree, int value, int* errorCode);
 void deleteTree(BinarySearchTree* tree);
 
 //function sorts array using binary search tree
-int* sortArray(int* array, int lenght, int* errorCode);
+void sortArray(int* array, int lenght, int* errorCode);

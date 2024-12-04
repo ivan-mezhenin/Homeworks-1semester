@@ -130,7 +130,7 @@ void inOrderTraversal(Node* node, int* array, int *index) {
     }
 }
 
-int* sortArray(int* array, int lenght, int* errorCode) {
+void sortArray(int* array, int lenght, int* errorCode) {
     if (array == NULL) {
         *errorCode = POINTER_IS_NULL;
         return NULL;
