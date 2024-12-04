@@ -1,87 +1,85 @@
 #include "List.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 
 typedef struct ListElement {
-    char* value;
+    char* word;
+    int frequency;
     struct ListElement* next;
 }ListElement;
 
-typedef struct List {
-    ListElement* head;
-} List;
+ListElement* createListElement(char* word, int* errorCode) {
+    ListElement* node = calloc(1, sizeof(ListElement));
+    if (node == NULL) {
+        *errorCode = MEMORY_ALLOCATION_ERROR;
+        return NULL;
+    }
+    node->frequency = 1;
 
-List* createList(int* errorCode) {
-    List* list = calloc(1, sizeof(List));
-    if (list == NULL) {
+    node->word = malloc(strlen(word) + 1);
+    if (node->word == NULL) {
+        free(node);
         *errorCode = MEMORY_ALLOCATION_ERROR;
         return NULL;
     }
 
-    return list;
+    strcpy(node->word, word);
+    node->next = NULL;
+
+    return node;
 }
 
-bool isListEmpty(List* list, int* errorCode) {
-    if (list == NULL) {
-        *errorCode = POINTER_IS_NULL;
-        return false;
-    }
-
-    return list->head == NULL;
-}
-
-void printList(List* list, int* errorCode) {
-    if (list == NULL) {
+void printList(ListElement** head, int* errorCode) {
+    if (head == NULL || *head == NULL) {
         *errorCode = POINTER_IS_NULL;
         return;
     }
 
-    if (isListEmpty(list, errorCode)) {
-        printf("List is empty\n");
-        return;
-    }
-
-    ListElement* current = list->head;
+    ListElement* current = *head;
     while (current != NULL) {
-        printf("%s ", current->value);
+        printf("%s %d\n", current->word, current->frequency);
         current = current->next;
     }
-    printf("\n");
 }
 
-
-void addElement(List* list, char* value, int* errorCode) {
-    if (list == NULL) {
+void addElement(ListElement** head, char* word, int* errorCode, bool* wordIsUnique) {
+    if (head == NULL) {
         *errorCode = POINTER_IS_NULL;
         return;
     }
 
-    ListElement* newElement = calloc(1, sizeof(ListElement));
-    if (newElement == NULL) {
-        *errorCode = MEMORY_ALLOCATION_ERROR;
-        return;
-    }
-
-    newElement->value = malloc(strlen(value) + 1);
-    if (newElement->value == NULL) {
-        free(newElement);
-        *errorCode = MEMORY_ALLOCATION_ERROR;
-        return;
-    }
-
-    strcpy(newElement->value, value);
-
-    if (isListEmpty(list, errorCode)) {
-        list->head = newElement;
-        return;
-    }
-
-    ListElement* current = list->head;
-    
-    while (current->next != NULL) {
+    ListElement* current = *head;
+    while (current != NULL) {
+        if (strcmp(current->word, word) == 0) {
+            ++current->frequency;
+            *wordIsUnique = false;
+            return;
+        }
         current = current->next;
     }
-    current->next = newElement;
+
+    ListElement* newElement = createListElement(word, errorCode);
+    if (*errorCode != 0) {
+        return;
+    }
+
+    newElement->next = *head;
+    *head = newElement;
+}
+
+void deleteList(ListElement* head) {
+    ListElement* current = head;
+    while (current != NULL) {
+        ListElement* toDelete = current;
+        current = current->next;
+        free(toDelete->word);
+        free(toDelete);
+    }
+}
+
+int getFrequency(ListElement* node) {
+    return node->frequency;
 }

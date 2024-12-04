@@ -21,6 +21,9 @@
     <ClCompile Include="List.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="HashTableTask.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HashTable.h">
