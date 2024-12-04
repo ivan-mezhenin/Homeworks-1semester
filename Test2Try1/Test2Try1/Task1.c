@@ -39,13 +39,14 @@ void bubbleSort(int* array, int length) {
 
 bool test1(void) {
     int errorCode = 0;
-    int array[20];
-    int sortedArray[20] = { 0, 1, 3, 5, 11, 13, 14, 15, 17, 34, 54, 56, 78, 90, 100, 141, 144, 431, 1431, 14351 };
-    sortArray(array, 20, &errorCode);
+    int n = 8;
+    int array[8] = {9, 7, 6, 5, 4, 3, 2, 1};
+    int sortedArray[8] = {1, 2, 3, 4, 5, 6, 7, 9};
+    sortArray(array, n, &errorCode);
     if (errorCode != 0) {
         return false;
     }
-    for (int i = 0; i < 20; ++i) {
+    for (int i = 0; i < n; ++i) {
         if (array[i] != sortedArray[i]) {
             return false;
         }
@@ -55,8 +56,8 @@ bool test1(void) {
 
 bool test2(void) {
     int errorCode = 0;
-    int n = 20;
-    int* array = calloc(n, sizeof(int));
+    int n = 5;
+    int array[5] = {245, 7, 5, 199, 3};
     int* sortedArray = calloc(n, sizeof(int));
     if (array == NULL || sortedArray == NULL) {
         return false;
@@ -71,11 +72,6 @@ bool test2(void) {
         return false;
     }
 
-    for (int i = 0; i < n; ++i) {
-        printf("%d ", array[i]);
-    }
-
-
     bubbleSort(sortedArray, n);
 
     for (int i = 0; i < n; ++i) {
@@ -86,24 +82,21 @@ bool test2(void) {
         }
     }
 
-    free(array);
     free(sortedArray);
 
     return true;
 }
-
-
-
 
 bool test(void) {
     return test1() && test2();
 }
 
 int main(void) {
-    //if (!test()) {
-    //    printf("Tests failed\n");
-    //    return TESTS_FAILED;
-    //}
+    if (!test()) {
+        printf("Tests failed\n");
+        return TESTS_FAILED;
+    }
+
     int errorCode = 0;
     int n = 13;
     int array[20] = { 100, 3, 15, 78, 141, 1431, 1, 431, 14, 54, 11, 17, 90, 5, 14351, 144, 13, 56, 0, 34 };
