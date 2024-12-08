@@ -5,12 +5,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-typedef struct ListElement {
-    char* word;
-    int frequency;
-    struct ListElement* next;
-}ListElement;
-
 ListElement* createListElement(char* word, int* errorCode) {
     ListElement* node = calloc(1, sizeof(ListElement));
     if (node == NULL) {
@@ -33,7 +27,7 @@ ListElement* createListElement(char* word, int* errorCode) {
 }
 
 void printList(ListElement** head, int* errorCode) {
-    if (head == NULL || *head == NULL) {
+    if (head == NULL) {
         *errorCode = POINTER_IS_NULL;
         return;
     }

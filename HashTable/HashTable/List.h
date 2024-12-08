@@ -7,7 +7,11 @@
 #define POINTER_IS_NULL -2
 #define MAX_DATA_SIZE 100
 
-typedef struct ListElement ListElement;
+typedef struct ListElement {
+    char* word;
+    int frequency;
+    struct ListElement* next;
+} ListElement;
 
 ListElement* createListElement(char* word, int* errorCode);
 

@@ -26,16 +26,21 @@ HashTable* createHashTable(int size, int* errorCode) {
         return NULL;
     }
 
+    for (int i = 0; i < size; ++i) {
+        hashTable->table[i] = NULL;
+    }
+
     return hashTable;
 }
 
 unsigned int hash(char* word, int tableSize) {
+    unsigned int hashValue = 0;
     int primeNumber = 31;
-    int hashValue = word[0] - 'a' + 1;
-    for (int i = 1; i < strlen(word); ++i) {
-        hashValue *= primeNumber;
-        hashValue += word[i] - 'a';
+
+    for (int i = 0; word[i] != '\0'; ++i) {
+        hashValue = hashValue * primeNumber + word[i];
     }
+
     return hashValue % tableSize;
 }
 
@@ -54,24 +59,47 @@ void addWordInHashTable(HashTable* hashTable, char* word, int *errorCode) {
     }
 }
 
-int main(void) {
-    int n = 32;
-    int errorCode = 0;
-    HashTable* table = createHashTable(n, &errorCode);
-    addWordInHashTable(table, "aboba", &errorCode);
-    addWordInHashTable(table, "aboba", &errorCode);
-    addWordInHashTable(table, "aboba", &errorCode);
-    addWordInHashTable(table, "aboba", &errorCode);
-    addWordInHashTable(table, "aboba", &errorCode);
-    addWordInHashTable(table, "aboba", &errorCode);
-    addWordInHashTable(table, "aboba", &errorCode);
-    addWordInHashTable(table, "aboba", &errorCode);
-    addWordInHashTable(table, "aboba", &errorCode);
-    addWordInHashTable(table, "aboba", &errorCode);
-    addWordInHashTable(table, "aboba", &errorCode);
-    addWordInHashTable(table, "aboba", &errorCode);
-    addWordInHashTable(table, "ivan", &errorCode);
-    addWordInHashTable(table, "nikita", &errorCode);
-    addWordInHashTable(table, "really???", &errorCode);
-    printf("%d", getFrequency( table->table[hash("aboba", n)]));
+void printHashTable(HashTable* hashTable, int *errorCode) {
+    ListElement** table = hashTable->table;
+    for (int i = 0; i < hashTable->size; ++i) {
+        printList(&table[i], errorCode);
+        if (*errorCode != 0) {
+            return;
+        }
+    }
+}
+
+void printStatisticsOfHashTable(HashTable* hashTable, int *errorCode) {
+    if (hashTable == NULL) {
+        *errorCode = POINTER_IS_NULL;
+        return;
+    }
+
+    int amountOfNonEmptyElements = 0;
+    int maxLength = 0;
+    int totalLength = 0;
+
+    for (int i = 0; i < hashTable->size; ++i) {
+        int length = 0;
+        ListElement* current = hashTable->table[i];
+        if (current == NULL) {
+            continue;
+        }
+
+
+        while (current != NULL) {
+            ++length;
+            current = current->next;
+        }
+
+        totalLength += length;
+        ++amountOfNonEmptyElements;
+        maxLength = max(maxLength, length);
+    }
+
+    printf("Fill factor: %.2f\n", (double)hashTable->amountOfUniqueWords / hashTable->size);
+    printf("The average length of the list: %.2f\n", (amountOfNonEmptyElements > 0) ?
+        (double)totalLength / amountOfNonEmptyElements : 0);
+    printf("The max length of the list: %d\n", maxLength);
+
 }
