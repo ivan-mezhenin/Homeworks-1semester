@@ -24,6 +24,9 @@
     <ClCompile Include="HashTableTask.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="HashTableTest.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HashTable.h">
@@ -32,9 +35,15 @@
     <ClInclude Include="List.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="HashTableTest.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="data.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="testdata1.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
   </ItemGroup>

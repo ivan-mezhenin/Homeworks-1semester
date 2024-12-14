@@ -3,6 +3,10 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
+
+#define FILE_NOT_FOUND -131
+#define MAX_WORD_SIZE 100
 
 typedef struct HashTable {
     ListElement** table;
@@ -33,6 +37,15 @@ HashTable* createHashTable(int size, int* errorCode) {
     return hashTable;
 }
 
+ListElement** getTable(HashTable* hashTable, int* errorCode) {
+    if (hashTable == NULL || hashTable->table == NULL) {
+        *errorCode = POINTER_IS_NULL;
+        return NULL;
+    }
+
+    return hashTable->table;
+}
+
 unsigned int hash(char* word, int tableSize) {
     unsigned int hashValue = 0;
     int primeNumber = 31;
@@ -59,6 +72,29 @@ void addWordInHashTable(HashTable* hashTable, char* word, int *errorCode) {
     }
 }
 
+void fillInTheTableWithDataFromFile(char* filename, HashTable* hashTable, int* errorCode) {
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        *errorCode = FILE_NOT_FOUND;
+        return;
+    }
+
+    while (!feof(file)) {
+        char* buffer = malloc(sizeof(char) * MAX_WORD_SIZE);
+        const int readBytes = fscanf(file, "%s", buffer);
+        if (readBytes < 0) {
+            break;
+        }
+
+        addWordInHashTable(hashTable, buffer, errorCode);
+        if (*errorCode != 0) {
+            return;
+        }
+    }
+
+    fclose(file);
+}
+
 void printHashTable(HashTable* hashTable, int *errorCode) {
     ListElement** table = hashTable->table;
     for (int i = 0; i < hashTable->size; ++i) {
@@ -67,6 +103,15 @@ void printHashTable(HashTable* hashTable, int *errorCode) {
             return;
         }
     }
+}
+
+void deleteHashTable(HashTable* hashTable) {
+    for (int i = 0; i < hashTable->size; i++) {
+        deleteList(hashTable->table[i]);
+    }
+
+    free(hashTable->table);
+    free(hashTable);
 }
 
 void printStatisticsOfHashTable(HashTable* hashTable, int *errorCode) {
@@ -85,7 +130,6 @@ void printStatisticsOfHashTable(HashTable* hashTable, int *errorCode) {
         if (current == NULL) {
             continue;
         }
-
 
         while (current != NULL) {
             ++length;

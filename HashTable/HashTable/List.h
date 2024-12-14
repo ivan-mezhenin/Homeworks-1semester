@@ -13,12 +13,14 @@ typedef struct ListElement {
     struct ListElement* next;
 } ListElement;
 
+// create list element
 ListElement* createListElement(char* word, int* errorCode);
 
+// print list
 void printList(ListElement** head, int* errorCode);
 
+// add element in list
 void addElement(ListElement** head, char* word, int* errorCode, bool* wordIsUnique);
 
+// free memory of list
 void deleteList(ListElement* head);
-
-int getFrequency(ListElement* node);
