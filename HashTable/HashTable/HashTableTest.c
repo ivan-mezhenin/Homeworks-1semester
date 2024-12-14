@@ -32,6 +32,7 @@ bool test1(void) {
 
     bool passed = strcmp(current->word, "amogus") == 0 && current->frequency == expectedResult;
 
+    deleteHashTable(hashTable);
     return passed;
 }
 
