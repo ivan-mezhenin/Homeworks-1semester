@@ -23,7 +23,6 @@ void fillArrayOfRandowNumbers(int* array, int length) {
     }
 }
 
-
 void swapElements(int* left, int* right) {
     if (*left != *right) {
         *left ^= *right;
@@ -32,7 +31,7 @@ void swapElements(int* left, int* right) {
     }
 }
 
-void insertionSort(int *array, int left, int right, int * errorCode) {
+void insertionSort(int *array, int left, int right, int* errorCode) {
     if (array == NULL) {
         *errorCode = POINTER_IS_NULL;
         return;
@@ -136,6 +135,7 @@ bool test2() {
             return false;
         }
     }
+
     return true;
 }
 
