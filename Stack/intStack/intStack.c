@@ -3,8 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define STACK_IS_EMPTY 1
-#define MEMORY_ERROR 2
+#define INVALID_OPERATION_WITH_EMPTY_STACK 1
+#define MEMORY_ALLOCATION_ERROR -1
+#define POINTER_IS_NULL -2
 
 typedef struct IntStackElement {
     int value;
@@ -13,54 +14,64 @@ typedef struct IntStackElement {
 
 typedef struct IntStack {
     IntStackElement* head;
+    int length;
 } IntStack;
 
-IntStack* createIntStack(void) {
+IntStack* createIntStack(int *errorCode) {
     IntStack* stack = (IntStack*)malloc(sizeof(IntStack));
-
     if (stack == NULL) {
-        printf("Memory allocation error for stack\n");
+        *errorCode = MEMORY_ALLOCATION_ERROR;
         return NULL;
     }
 
+    stack->length = 0;
     stack->head = NULL;
     return stack;
 }
 
-void pushInt(IntStack* stack, int value) {
-    IntStackElement* element = malloc(sizeof(IntStackElement));
+void pushInt(IntStack* stack, int value, int *errorCode) {
+    if (stack == NULL) {
+        *errorCode = POINTER_IS_NULL;
+        return;
+    }
 
+    IntStackElement* element = malloc(sizeof(IntStackElement));
     if (element == NULL) {
-        printf("memory allocation error for stack element\n");
-        return MEMORY_ERROR;
+        *errorCode = MEMORY_ALLOCATION_ERROR;
+        return;
     }
 
     element->value = value;
     element->next = stack->head;
     stack->head = element;
+    ++stack->length;
 }
 
-int popInt(IntStack* stack) {
+int popInt(IntStack* stack, int *errorCode) {
     if (stack->head == NULL) {
-        printf("Extracting an element from an empty stack\n");
-        return STACK_IS_EMPTY;
+        *errorCode = INVALID_OPERATION_WITH_EMPTY_STACK;
+        return INVALID_OPERATION_WITH_EMPTY_STACK;
     }
 
     IntStackElement* tmp = stack->head;
     int popedElement = tmp->value;
     stack->head = stack->head->next;
+    --stack->length;
+
     free(tmp);
     return popedElement;
 }
 
-void destroyIntStack(IntStack* stack) {
+void deleteIntStack(IntStack* stack) {
     IntStackElement* current = stack->head;
     IntStackElement* next;
+
     while (current != NULL) {
         next = current->next;
         free(current);
         current = next;
     }
+
     free(stack);
 }
 
@@ -75,21 +86,11 @@ void printIntStack(IntStack* stack) {
     printf("\n");
 }
 
-int topIntStack(IntStack* stack) {
+int topIntStack(IntStack* stack, int *errorCode) {
     if (stack->head == NULL) {
-        return '\0';
+        *errorCode = INVALID_OPERATION_WITH_EMPTY_STACK;
+        return INVALID_OPERATION_WITH_EMPTY_STACK;
     }
+
     return stack->head->value;
-}
-
-int getAmountOfElementsInIntStack(IntStack* stack){
-    IntStackElement* currentElement = stack->head;
-    int elementsCounter = 0;
-
-    while (currentElement != NULL) {
-        ++elementsCounter;
-        currentElement = currentElement->next;
-    }
-
-    return elementsCounter;
 }

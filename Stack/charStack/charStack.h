@@ -1,29 +1,24 @@
 #pragma once
 
-// Stack's element, stores value and pointer to the next element
 typedef struct CharStackElement CharStackElement;
 
-// Stack, stores pointer to head of stack
 typedef struct CharStack CharStack;
 
 // to create stack, returns pointer to new stack
-CharStack* createCharStack(void);
+CharStack* createCharStack(int* errorCode);
 
 // to push a new element to the stack
-void pushChar(CharStack* stack, char value);
+void pushChar(CharStack* stack, char value, int* errorCode);
 
 // to delete element in the head of stack 
-char popChar(CharStack* stack);
+char popChar(CharStack* stack, int* errorCode);
 
 // to delete stack and free memory
-void destroyCharStack(CharStack* stack);
+void deleteCharStack(CharStack* stack);
 
 // to print stack's elements
 void printCharStack(CharStack* stack);
 
 // to return value in the head of stack
-char topCharStack(CharStack* stack);
-
-// to return amount of elements in stack
-int getAmountOfElementsInIntStack(CharStack* stack);
+char topCharStack(CharStack* stack, int* errorCode);
 
