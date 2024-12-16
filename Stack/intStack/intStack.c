@@ -94,3 +94,7 @@ int topIntStack(IntStack* stack, int *errorCode) {
 
     return stack->head->value;
 }
+
+int getStackLength(IntStack* stack) {
+    return stack->length;
+}
