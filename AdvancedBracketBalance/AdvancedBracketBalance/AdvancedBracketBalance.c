@@ -5,14 +5,14 @@
 #include "stdbool.h"
 #include "string.h"
 
-#define _CRT_SECURE_NO_WARNINGS
 #define MAX_STRING_LENGTH 100
 #define INPUT_ERROR -3
-#define TESTS_FAILED 1488
-#define TOP_OF_STACK_IS_NULL '\0'
+#define TESTS_FAILED -6
+#define INVALID_OPERATION_WITH_EMPTY_STACK 1
+#define MEMORY_ALLOCATION_ERROR -1
+#define POINTER_IS_NULL -2
 
 char pairedBracket(char bracket) {
-
     if (bracket == ')') {
         return '(';
     }
@@ -25,32 +25,53 @@ char pairedBracket(char bracket) {
 }
 
 bool isBracketSequenceCorrect(char secuence[], int length, int* errorCode) {
-    CharStack* bracketStack = createCharStack();
+    CharStack* bracketStack = createCharStack(errorCode);
+    if (*errorCode != 0) {
+        return false;
+    }
 
     for (int i = 0; i < length; ++i) {
         char rightBracket = secuence[i];
 
         if (rightBracket == '(' || rightBracket == '[' || rightBracket == '{') {
-            pushChar(bracketStack, rightBracket);
-        }
-        else if (rightBracket == '}' || rightBracket == ']' || rightBracket == ')') {
-            char leftBracket = pairedBracket(secuence[i], errorCode);
-
-            if (topCharStack(bracketStack) == TOP_OF_STACK_IS_NULL) {
+            pushChar(bracketStack, rightBracket, errorCode);
+            if (*errorCode != 0) {
                 return false;
             }
 
-            char currentTopStackElement = popChar(bracketStack);
+            continue;
+        }
+
+        if (rightBracket == '}' || rightBracket == ']' || rightBracket == ')') {
+            char leftBracket = pairedBracket(rightBracket);
+
+            if (getStackLength(bracketStack) == 0) {
+                deleteCharStack(bracketStack);
+                return false;
+            }
+
+            char currentTopStackElement = popChar(bracketStack, errorCode);
+            if (*errorCode != 0) {
+                return false;
+            }
+
             if (currentTopStackElement != leftBracket) {
+                deleteCharStack(bracketStack);
                 return false;
             }
+
+            continue;
         }
-        else {
-            *errorCode = INPUT_ERROR;
-            return false;
-        }
+
+        *errorCode = INPUT_ERROR;
+
+        deleteCharStack(bracketStack);
+        return false;
     }
-    return topCharStack(bracketStack) == TOP_OF_STACK_IS_NULL;
+
+    bool isBalanced = getStackLength(bracketStack) == 0;
+    deleteCharStack(bracketStack);
+    return isBalanced;
 }
 
 bool isBracketSequenceCorrectTestCorrectCase(void) {
@@ -83,15 +104,30 @@ int main(void) {
     gets_s(secuence, MAX_STRING_LENGTH);
     const int secuenceLength = strlen(secuence);
 
-    if (isBracketSequenceCorrect(secuence, secuenceLength, &errorCode)) {
+    bool result = isBracketSequenceCorrect(secuence, secuenceLength, &errorCode);
+    if (errorCode == INPUT_ERROR) {
+        printf("Incorrect bracket sequence\n");
+        return errorCode;
+    }
+    else if (errorCode == POINTER_IS_NULL) {
+        printf("Passing a null pointer\n");
+        return errorCode;
+    }
+    else if (errorCode == MEMORY_ALLOCATION_ERROR) {
+        printf("Memory allocation error\n");
+        return errorCode;
+    }
+    else if (errorCode == INVALID_OPERATION_WITH_EMPTY_STACK) {
+        printf("Invalid operation with empty stack\n");
+        return errorCode;
+    }
+
+    if (result) {
         printf("Balance\n");
     }
     else {
-        if (errorCode == INPUT_ERROR) {
-            printf("Sequence must consist of \"({[)}]\"\n");
-        }
-        else {
-            printf("No balance\n");
-        }
+        printf("No balance\n");
     }
+
+    return errorCode;
 }
