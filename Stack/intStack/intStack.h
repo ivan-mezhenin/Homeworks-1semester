@@ -21,3 +21,6 @@ void printIntStack(IntStack* stack);
 
 // to return value in the head of stack
 int topIntStack(IntStack* stack, int* errorCode);
+
+// return length of stack
+int getStackLength(IntStack* stack);

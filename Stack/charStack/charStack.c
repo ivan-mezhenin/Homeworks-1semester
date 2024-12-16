@@ -94,3 +94,7 @@ char topCharStack(CharStack* stack, int* errorCode) {
 
     return stack->head->value;
 }
+
+int getStackLength(CharStack* stack) {
+    return stack->length;
+}

@@ -22,3 +22,6 @@ void printCharStack(CharStack* stack);
 // to return value in the head of stack
 char topCharStack(CharStack* stack, int* errorCode);
 
+// return length of stack
+int getStackLength(CharStack* stack);
+
