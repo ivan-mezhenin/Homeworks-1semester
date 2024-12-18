@@ -71,6 +71,7 @@ bool isBracketSequenceCorrect(char secuence[], int length, int* errorCode) {
 
     bool isBalanced = getStackLength(bracketStack) == 0;
     deleteCharStack(bracketStack);
+
     return isBalanced;
 }
 
