@@ -4,49 +4,69 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define _CRT_SECURE_NO_WARNINGS
 #define MAX_STRING_SIZE 150
-#define INCORRECT_POSTFIX_FORM -2
+#define INCORRECT_POSTFIX_FORM -6
 #define DIVISION_BY_ZERO -3
 #define TESTS_FAILED -4
+#define INVALID_OPERATION_WITH_EMPTY_STACK 1
+#define MEMORY_ALLOCATION_ERROR -1
+#define POINTER_IS_NULL -2
 
 int operationWithNumbers(IntStack* stack, char operation, int* errorCode) {
 
     if (operation == '-') {
-        int number1 = popInt(stack);
-        int number2 = popInt(stack);
-        return number2 - number1;
+        int number2 = popInt(stack, errorCode);
+        int number1 = popInt(stack, errorCode);
+        if (*errorCode != 0) {
+            return *errorCode;
+        }
+
+        return number1 - number2;
     }
 
     if (operation == '+') {
-        int number1 = popInt(stack);
-        int number2 = popInt(stack);
-        return number2 + number1;
+        int number2 = popInt(stack, errorCode);
+        int number1 = popInt(stack, errorCode);
+        if (*errorCode != 0) {
+            return *errorCode;
+        }
+
+        return number1 + number2;
     }
 
     if (operation == '*') {
-        int number1 = popInt(stack);
-        int number2 = popInt(stack);
-        return number2 * number1;
+        int number2 = popInt(stack, errorCode);
+        int number1 = popInt(stack, errorCode);
+        if (*errorCode != 0) {
+            return *errorCode;
+        }
+
+        return number1 * number2;
     }
 
     if (operation == '/') {
-        int number1 = popInt(stack);
-        int number2 = popInt(stack);
+        int number2 = popInt(stack, errorCode);
+        int number1 = popInt(stack, errorCode);
+        if (*errorCode != 0) {
+            return *errorCode;
+        }
 
-        if (number1 == 0) {
+        if (number2 == 0) {
             *errorCode = DIVISION_BY_ZERO;
             return DIVISION_BY_ZERO;
         }
 
-        return number2 / number1;
+        return number1 / number2;
     }
 }
 
 int calculateTheResultOfTheExpressionInPostfixForm(char postfixString[], int size,  int* errorCode) {
 
-    IntStack *numbers = createIntStack();
-    int amountOfNumbersInStack = 0;
+    IntStack *numbers = createIntStack(errorCode);
+    if (*errorCode != 0) {
+        return *errorCode;
+    }
+
     char currentSymbol = ' ';
     char nextSymbol = ' ';
 
@@ -66,39 +86,46 @@ int calculateTheResultOfTheExpressionInPostfixForm(char postfixString[], int siz
 
             nextSymbol = postfixString[i + 2];
 
-            if (amountOfNumbersInStack == 2) {
+            if (getStackLength(numbers) == 2) {
                 if (nextSymbol == '-' || nextSymbol == '+' || nextSymbol == '*' || nextSymbol == '/') {
-                    pushInt(numbers, currentSymbol - '0');
-                    ++amountOfNumbersInStack;
+                    pushInt(numbers, currentSymbol - '0', errorCode);
+                    if (*errorCode != 0) {
+                        deleteIntStack(numbers);
+                        return *errorCode;
+                    }
                 }
                 else {
                     *errorCode = INCORRECT_POSTFIX_FORM;
+
                     return INCORRECT_POSTFIX_FORM;
                 }
             }
             else {
-                pushInt(numbers, currentSymbol - '0');
-                ++amountOfNumbersInStack;
+                pushInt(numbers, currentSymbol - '0', errorCode);
+                if (*errorCode != 0) {
+                    deleteIntStack(numbers);
+                    return *errorCode;
+                }
             }
         }
 
         if (currentSymbol == '-' || currentSymbol == '+' || currentSymbol == '*' || currentSymbol == '/') {
-            pushInt(numbers, operationWithNumbers(numbers, currentSymbol, errorCode));
+            pushInt(numbers, operationWithNumbers(numbers, currentSymbol, errorCode), errorCode);
             if (*errorCode != 0) {
+                deleteIntStack(numbers);
                 return *errorCode;
             }
-            --amountOfNumbersInStack;
         }
     }
 
-    if (amountOfNumbersInStack > 1) {
+    if (getStackLength(numbers) > 1) {
         *errorCode = INCORRECT_POSTFIX_FORM;
-        destroyIntStack(numbers);
+        deleteIntStack(numbers);
         return INCORRECT_POSTFIX_FORM;
     }
 
-    int totalResult = topIntStack(numbers);
-    destroyIntStack(numbers);
+    int totalResult = topIntStack(numbers, errorCode);
+    deleteIntStack(numbers);
     return totalResult;
 }
 
@@ -185,12 +212,19 @@ int main(void) {
     }
     else if (errorCode == INCORRECT_POSTFIX_FORM) {
         printf("Your expression is incorrect\n");
-        return errorCode;
     }
     else if (errorCode == DIVISION_BY_ZERO) {
         printf("Division by zero\n");
-        return errorCode;
+    }
+    else if (errorCode == INVALID_OPERATION_WITH_EMPTY_STACK) {
+        printf("Invalid operation with empty stack\n");
+    }
+    else if (errorCode == POINTER_IS_NULL) {
+        printf("Passing a null pointer\n");
+    }
+    else if (errorCode == MEMORY_ALLOCATION_ERROR) {
+        printf("Memory allocation error\n");
     }
 
-    return 0;
+    return errorCode;
 }
