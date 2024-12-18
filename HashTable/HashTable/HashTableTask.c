@@ -18,6 +18,7 @@ int hashTableTask(char* filename, int hashTableSize, int* errorCode) {
 
     fillInTheTableWithDataFromFile(filename, hashTable, errorCode);
     if (*errorCode != 0) {
+        deleteHashTable(hashTable);
         return *errorCode;
     }
 

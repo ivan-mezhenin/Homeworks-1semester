@@ -88,6 +88,7 @@ void fillInTheTableWithDataFromFile(char* filename, HashTable* hashTable, int* e
 
         addWordInHashTable(hashTable, buffer, errorCode);
         if (*errorCode != 0) {
+            fclose(file);
             return;
         }
     }
