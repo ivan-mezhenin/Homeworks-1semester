@@ -130,9 +130,12 @@
   <ItemGroup>
     <ClCompile Include="..\..\Stack\charStack\charStack.c" />
     <ClCompile Include="ForInfixToPostfixForm.c" />
+    <ClCompile Include="ForPostfixToInfixFormTest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Stack\charStack\charStack.h" />
+    <ClInclude Include="ForPostfixToInfixForm.h" />
+    <ClInclude Include="ForPostfixToInfixFormTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
