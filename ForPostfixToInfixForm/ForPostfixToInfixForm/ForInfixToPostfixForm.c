@@ -40,7 +40,11 @@ int getOperationPrecedence(char sign) {
 }
 
 void convertExpressionFromInfixFormToPostfix(char infixExpression[], int stringLength, char postfixExpression[], int* errorCode) {
-    CharStack* signs = createCharStack();
+    CharStack* signs = createCharStack(errorCode);
+    if (*errorCode != 0) {
+        return;
+    }
+
     int postfixExpressionIndex = 0;
     char currentSymbol = ' ';
 
@@ -54,30 +58,58 @@ void convertExpressionFromInfixFormToPostfix(char infixExpression[], int stringL
             postfixExpression[postfixExpressionIndex++] = currentSymbol;
         }
         else if (currentSymbol == '(') {
-            pushChar(signs, currentSymbol);
+            pushChar(signs, currentSymbol, errorCode);
+            if (*errorCode != 0) {
+                deleteCharStack(signs);
+                return;
+            }
+
         }
         else if (isOperation(currentSymbol)) {
-            while (topCharStack(signs) != '\0' &&
-                (getOperationPrecedence(topCharStack(signs)) >= getOperationPrecedence(currentSymbol))) {
-                postfixExpression[postfixExpressionIndex++] = popChar(signs);
+            while (topCharStack(signs, errorCode) != '\0' &&
+                (getOperationPrecedence(topCharStack(signs, errorCode)) >= getOperationPrecedence(currentSymbol))) {
+                postfixExpression[postfixExpressionIndex++] = popChar(signs, errorCode);
+                if (*errorCode != 0) {
+                    deleteCharStack(signs);
+                    return;
+                }
             }
-            pushChar(signs, currentSymbol);
+            pushChar(signs, currentSymbol, errorCode);
+            if (*errorCode != 0) {
+                deleteCharStack(signs);
+                return;
+            }
         }
         else if (currentSymbol == ')') {
-            while (topCharStack(signs) != '\0' && topCharStack(signs) != '(') {
-                postfixExpression[postfixExpressionIndex++] = popChar(signs);
+            while (topCharStack(signs, errorCode) != '\0' && topCharStack(signs, errorCode) != '(') {
+                postfixExpression[postfixExpressionIndex++] = popChar(signs, errorCode);
+                if (*errorCode != 0) {
+                    deleteCharStack(signs);
+                    return;
+                }
             }
-            popChar(signs);
+            popChar(signs, errorCode);
+            if (*errorCode != 0) {
+                deleteCharStack(signs);
+                return;
+            }
         }
         else {
             *errorCode = INCORRECT_EXPRESSION;
+            deleteCharStack(signs);
             return;
         }
     }
 
-    while (topCharStack(signs) != '\0') {
-        postfixExpression[postfixExpressionIndex++] = popChar(signs);
+    while (topCharStack(signs, errorCode) != '\0') {
+        postfixExpression[postfixExpressionIndex++] = popChar(signs, errorCode);
+        if (*errorCode != 0) {
+            deleteCharStack(signs);
+            return;
+        }
     }
+
+    deleteCharStack(signs);
 }
 
 bool convertExpressionFromInfixFormToPostfixTest(void) {
