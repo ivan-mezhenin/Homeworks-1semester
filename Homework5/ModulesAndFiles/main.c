@@ -60,8 +60,8 @@ bool testCorrectCase1() {
 bool testCorrectCase2() {
     int errorCode = 0;
     int size = 1;
-    int testArray[] = {1};
-    int expectedResult = 1;
+    int testArray[] = {2};
+    int expectedResult = 2;
 
     bool passed = TheMostFrequentElementInTheArray(testArray, size, &errorCode) == expectedResult && (errorCode == 0);
     
