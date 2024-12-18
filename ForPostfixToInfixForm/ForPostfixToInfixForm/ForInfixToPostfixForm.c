@@ -55,53 +55,67 @@ void convertExpressionFromInfixFormToPostfix(char infixExpression[], int stringL
     for (int i = 0; i < stringLength; ++i) {
         currentSymbol = infixExpression[i];
 
-        if (currentSymbol == ' ') {
-            continue;
-        }
-        else if ((currentSymbol <= '9' && currentSymbol >= '0')) {
-            postfixExpression[postfixExpressionIndex++] = currentSymbol;
-        }
-        else if (currentSymbol == '(') {
-            pushChar(signs, currentSymbol, errorCode);
-            if (*errorCode != 0) {
-                deleteCharStack(signs);
-                return;
+        switch (currentSymbol) {
+            case ' ': {
+                continue;
             }
 
-        }
-        else if (isOperation(currentSymbol)) {
-            while (getStackLength(signs) != 0 &&
-                (getOperationPrecedence(topCharStack(signs, errorCode)) >= getOperationPrecedence(currentSymbol))) {
-                postfixExpression[postfixExpressionIndex++] = popChar(signs, errorCode);
+            case '(': {
+                pushChar(signs, currentSymbol, errorCode);
                 if (*errorCode != 0) {
                     deleteCharStack(signs);
                     return;
                 }
+                break;
             }
-            pushChar(signs, currentSymbol, errorCode);
-            if (*errorCode != 0) {
-                deleteCharStack(signs);
-                return;
-            }
-        }
-        else if (currentSymbol == ')') {
-            while (getStackLength(signs) != 0 && topCharStack(signs, errorCode) != '(') {
-                postfixExpression[postfixExpressionIndex++] = popChar(signs, errorCode);
+
+            case ')': {
+                while (getStackLength(signs) != 0 && topCharStack(signs, errorCode) != '(') {
+                    postfixExpression[postfixExpressionIndex++] = popChar(signs, errorCode);
+                    if (*errorCode != 0) {
+                        deleteCharStack(signs);
+                        return;
+                    }
+                }
+
+                popChar(signs, errorCode);
                 if (*errorCode != 0) {
                     deleteCharStack(signs);
                     return;
                 }
+
+                break;
             }
-            popChar(signs, errorCode);
-            if (*errorCode != 0) {
+
+            default: {
+                if ((currentSymbol <= '9' && currentSymbol >= '0')) {
+                    postfixExpression[postfixExpressionIndex++] = currentSymbol;
+                    continue;
+                }
+
+                if (isOperation(currentSymbol)) {
+                    while (getStackLength(signs) != 0 &&
+                        (getOperationPrecedence(topCharStack(signs, errorCode)) >= getOperationPrecedence(currentSymbol))) {
+                        postfixExpression[postfixExpressionIndex++] = popChar(signs, errorCode);
+                        if (*errorCode != 0) {
+                            deleteCharStack(signs);
+                            return;
+                        }
+                    }
+
+                    pushChar(signs, currentSymbol, errorCode);
+                    if (*errorCode != 0) {
+                        deleteCharStack(signs);
+                        return;
+                    }
+
+                    continue;
+                }
+
+                *errorCode = INCORRECT_EXPRESSION;
                 deleteCharStack(signs);
                 return;
             }
-        }
-        else {
-            *errorCode = INCORRECT_EXPRESSION;
-            deleteCharStack(signs);
-            return;
         }
     }
 
