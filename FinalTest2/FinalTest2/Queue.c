@@ -65,3 +65,9 @@ int dequeue(Queue* queue, int* errorCode) {
 
     return popedElement;
 }
+
+void deleteQueue(Queue* queue) {
+    deleteIntStack(queue->stack1);
+    deleteIntStack(queue->stack2);
+    free(queue);
+}
