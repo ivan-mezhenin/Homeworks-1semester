@@ -4,6 +4,10 @@
 
 #include <stdio.h>
 
+#define POINTER_IS_NULL -1
+#define FILE_NOT_FOUND -2
+#define READ_DATA_ERROR -3
+
 void swapElements(int* left, int* right) {
     if (*left != *right) {
         *left ^= *right;
@@ -12,7 +16,12 @@ void swapElements(int* left, int* right) {
     }
 }
 
-void insertionSort(int array[], int left, int right) {
+void insertionSort(int* array, int left, int right, int* errorCode) {
+    if (array == NULL) {
+        *errorCode = POINTER_IS_NULL;
+        return;
+    }
+
     for (int i = left + 1; i <= right; ++i) {
         int numberIndex = i - 1;
         int currentNumberIndex = i;
@@ -25,7 +34,12 @@ void insertionSort(int array[], int left, int right) {
     }
 }
 
-void qSort(int array[], int left, int right) {
+void QSort(int* array, int left, int right, int* errorCode) {
+    if (array == NULL) {
+        *errorCode = POINTER_IS_NULL;
+        return;
+    }
+
     if (left >= right) {
         return;
     }
@@ -33,6 +47,13 @@ void qSort(int array[], int left, int right) {
     const int middleElement = array[(left + right) / 2];
     int leftPointer = left;
     int rightPointer = right;
+
+    if ((rightPointer - left + 1) < 10) {
+        insertionSort(array, left, rightPointer, errorCode);
+    }
+    if ((right - leftPointer + 1) < 10) {
+        insertionSort(array, leftPointer, right, errorCode);
+    }
 
     while (leftPointer <= rightPointer) {
         while (array[leftPointer] < middleElement) {
@@ -48,33 +69,26 @@ void qSort(int array[], int left, int right) {
         }
     }
 
-    if ((rightPointer - left + 1) < 10) {
-        insertionSort(array, left, rightPointer);
-    }
-    else {
-        qSort(array, left, rightPointer);
-    }
-
-    if ((right - leftPointer + 1) < 10) {
-        insertionSort(array, leftPointer, right);
-    }
-    else {
-        qSort(array, leftPointer, right);
-    }
+    QSort(array, left, rightPointer, errorCode);
+    QSort(array, leftPointer, right, errorCode);
 }
 
-void fileReadData(const char fileName[], int array[], int *arrayLength) {
+void fileReadData(const char fileName[], int array[], int *arrayLength, int* errorCode) {
     FILE* file = fopen(fileName, "r");
 
     if (file == NULL) {
-        printf("Файл не найден\n");
+        *errorCode = FILE_NOT_FOUND;
         return;
     }
     
     const int readBytes = fscanf(file, "%d", arrayLength);
 
     for (int i = 0; i < *arrayLength; ++i) {
-        fscanf(file, "%d", &array[i]);
+        if (fscanf(file, "%d", &array[i]) != 1) {
+            *errorCode = READ_DATA_ERROR;
+            fclose(file);
+            return;
+        }
     }
 
     fclose(file);
