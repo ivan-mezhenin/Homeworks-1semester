@@ -33,12 +33,14 @@ int AVLTreeTask(void) {
     int operation = 0;
     if (scanf("%d", &operation) != 1) {
         printf("Input error\n");
+        deleteAVLTree(tree);
         return INPUT_ERROR;
     }
 
     char* key = malloc(sizeof(char) * MAX_VALUE_SIZE);
     if (key == NULL) {
         errorCode = MEMORY_ALLOCATION_ERROR;
+        deleteAVLTree(tree);
         printf("Memory allocation error while creating key\n");
         return errorCode;
     }
@@ -46,6 +48,8 @@ int AVLTreeTask(void) {
     char* value = malloc(sizeof(char) * MAX_VALUE_SIZE);
     if (value == NULL) {
         errorCode = MEMORY_ALLOCATION_ERROR;
+        deleteAVLTree(tree);
+        free(key);
         printf("Memory allocation error while creating value\n");
         return errorCode;
     }
@@ -64,22 +68,35 @@ int AVLTreeTask(void) {
             printf("Enter key: ");
             if (scanf("%s", key) <= 0) {
                 printf("Input error\n");
+                deleteAVLTree(tree);
+                free(value);
+                free(key);
                 return INPUT_ERROR;
             }
 
             printf("Enter value: ");
             if (scanf("%s", value) <= 0) {
                 printf("Input error\n");
+                deleteAVLTree(tree);
+                free(value);
+                free(key);
                 return INPUT_ERROR;
             }
 
             addValueInAVLTree(tree, key, value, &errorCode);
             if (errorCode == POINTER_IS_NULL) {
+                deleteAVLTree(tree);
+                free(value);
+                free(key);
                 printf("Passing a null pointer while adding value in tree\n");
                 return errorCode;
             }
             else if (errorCode == MEMORY_ALLOCATION_ERROR) {
+                deleteAVLTree(tree);
+                free(value);
+                free(key);
                 printf("Memory allocation error while adding value in tree\n");
+                return errorCode;
             }
 
             printf("Value %s was added in dictionary by key %s\n", value, key);
@@ -89,12 +106,18 @@ int AVLTreeTask(void) {
             printf("Enter key: ");
             if (scanf("%s", key) <= 0) {
                 printf("Input error\n");
+                deleteAVLTree(tree);
+                free(value);
+                free(key);
                 return INPUT_ERROR;
             }
 
             value = getValue(tree, key, &errorCode);
             if (errorCode == POINTER_IS_NULL) {
                 printf("Passing a null pointer while getting value from tree\n");
+                deleteAVLTree(tree);
+                free(value);
+                free(key);
                 return errorCode;
             }
             else if (errorCode == KEY_NOT_FOUND) {
@@ -110,12 +133,18 @@ int AVLTreeTask(void) {
             printf("Enter key: ");
             if (scanf("%s", key) <= 0) {
                 printf("Input error\n");
+                deleteAVLTree(tree);
+                free(value);
+                free(key);
                 return INPUT_ERROR;
             }
 
             keyInAVLTree = isKeyInAVLTree(tree, key, &errorCode);
             if (errorCode == POINTER_IS_NULL) {
                 printf("Passing a null pointer while checking presence of key in dictionary\n");
+                deleteAVLTree(tree);
+                free(value);
+                free(key);
                 return errorCode;
             }
 
@@ -131,16 +160,25 @@ int AVLTreeTask(void) {
             printf("Enter key: ");
             if (scanf("%s", key) <= 0) {
                 printf("Input error\n");
+                deleteAVLTree(tree);
+                free(value);
+                free(key);
                 return INPUT_ERROR;
             }
 
             deleteValue(tree, key, &errorCode);
             if (errorCode == POINTER_IS_NULL) {
                 printf("Passing a null pointer while removal value from tree\n");
+                deleteAVLTree(tree);
+                free(value);
+                free(key);
                 return errorCode;
             }
             else if (errorCode == KEY_NOT_FOUND) {
                 printf("No such key in tree. Try again\n");
+                deleteAVLTree(tree);
+                free(value);
+                free(key);
                 errorCode = 0;
             }
             else {
@@ -161,6 +199,9 @@ int AVLTreeTask(void) {
 
         if (scanf("%d", &operation) <= 0) {
             printf("Input error\n");
+            deleteAVLTree(tree);
+            free(value);
+            free(key);
             return INPUT_ERROR;
         }
     }
