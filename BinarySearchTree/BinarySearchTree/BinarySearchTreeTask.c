@@ -153,6 +153,10 @@ int binarySearchTreeTask(void) {
             break;
         }
         }
+
+        if (isOperationEqualZero) {
+            continue;
+        }
         
         if (scanf("%d", &operation) != 1) {
             printf("Input error\n");
