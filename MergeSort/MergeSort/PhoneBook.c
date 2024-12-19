@@ -50,8 +50,6 @@ PhoneBookElement* lastPhoneBookElement(PhoneBook* phonebook, int* errorCode) {
     return currentElement;
 }
 
-
-
 void addNewPhoneBookElement(PhoneBook* phoneBook, const char* name, const char* number, int* errorCode) {
     PhoneBookElement* newElement = calloc(1, sizeof(PhoneBookElement));
     if (newElement == NULL) {
@@ -89,8 +87,16 @@ void printPhoneBook(PhoneBook* phoneBook) {
 }
 
 void deletePhonebook(PhoneBook* phonebook) {
+    if (phonebook == NULL) {
+        return;
+    }
+
     int errorCode = 0;
     while (!isPhoneBookEmpty(phonebook, &errorCode)) {
+        if (errorCode != 0) {
+            break;
+        }
+
         PhoneBookElement* currentElement = phonebook->head;
         phonebook->head = phonebook->head->next;
         free(currentElement);
@@ -103,8 +109,9 @@ int comparisonPhoneBookElements(PhoneBookElement* left, PhoneBookElement* right,
     return (parameter == 1) ? strcmp(left->name, right->name) : strcmp(left->number, right->number);
 }
 
-void merge(PhoneBook* phoneBook, int leftBorderIndex, int middleIndex, int rightBorderIndex, const int parameter) {
+void merge(PhoneBook* phoneBook, int leftBorderIndex, int rightBorderIndex, const int parameter) {
 
+    int middleIndex = (leftBorderIndex + rightBorderIndex) / 2;
     int leftIndex = leftBorderIndex;
     int rightIndex = middleIndex;
     PhoneBookElement* current = phoneBook->head;
@@ -176,7 +183,7 @@ void mergeSort(PhoneBook* phoneBook, int leftIndex, int rightIndex, int paramete
     int middleIndex = (leftIndex + rightIndex) / 2;
     mergeSort(phoneBook, leftIndex, middleIndex, parameter);
     mergeSort(phoneBook, middleIndex, rightIndex, parameter);
-    merge(phoneBook, leftIndex, middleIndex, rightIndex, parameter);
+    merge(phoneBook, leftIndex, rightIndex, parameter);
 }
 
 bool isPhoneBookSortedByCriteria(PhoneBook* phoneBook, const int criteria, int *errorCode) {

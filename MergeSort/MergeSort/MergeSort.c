@@ -3,6 +3,7 @@
 #include "PhoneBook.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 #define ERROR_OPEN_FILE -1
 #define INCORRECT_INPUT_CRITERIA -2
@@ -27,6 +28,7 @@ void readDataFromFileToPhoneBook(const char* filename, PhoneBook* phoneBook, int
         const int readBytes = fscanf(file, "%s", buffer);
 
         if (readBytes < 0) {
+            fclose(file);
             return;
         }
 
@@ -38,6 +40,7 @@ void readDataFromFileToPhoneBook(const char* filename, PhoneBook* phoneBook, int
             strcpy(number, buffer);
             addNewPhoneBookElement(phoneBook, name, number, errorCode);
             if (*errorCode != 0) {
+                fclose(file);
                 return;
             }
             itIsNumber = 0;
@@ -62,7 +65,10 @@ void mergeSortSolve(const char *filename, PhoneBook* phoneBook, int* errorCode) 
     printf("Enter: 1 - by name, 2 - by number\n");
 
     int sortingCriteria = 0;
-    scanf("%d", &sortingCriteria);
+    if (scanf("%d", &sortingCriteria) != 1) {
+        return;
+    }
+
     if (sortingCriteria != 1 && sortingCriteria != 2) {
         *errorCode = INCORRECT_INPUT_CRITERIA;
         return INCORRECT_INPUT_CRITERIA;
@@ -72,8 +78,6 @@ void mergeSortSolve(const char *filename, PhoneBook* phoneBook, int* errorCode) 
 
     printf("Phonebook after sorting:\n");
     printPhoneBook(phoneBook);
-
-    deletePhonebook(phoneBook);
 }
 
 bool mergeSortSolveTests(void) {
@@ -142,6 +146,7 @@ int main(void) {
     }
 
     mergeSortSolve("data.txt", phoneBook, &errorCode);
+    deletePhonebook(phoneBook);
 
     if (errorCode == INCORRECT_INPUT_CRITERIA) {
         printf("Criteria must be 1 or 2\n");

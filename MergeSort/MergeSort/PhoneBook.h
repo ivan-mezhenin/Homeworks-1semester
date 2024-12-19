@@ -32,7 +32,7 @@ void deletePhonebook(PhoneBook* phonebook);
 int comparisonPhoneBookElements(PhoneBookElement* left, PhoneBookElement* right, const int parameter);
 
 //merge two lists in one
-void merge(PhoneBook* phoneBook, int leftBorderIndex, int middleIndex, int rightBorderIndex, const int parameter);
+void merge(PhoneBook* phoneBook, int leftBorderIndex, int rightBorderIndex, const int parameter);
 
 //sort elements in list
 void mergeSort(PhoneBook* phoneBook, int leftIndex, int rightIndex, int parameter);
