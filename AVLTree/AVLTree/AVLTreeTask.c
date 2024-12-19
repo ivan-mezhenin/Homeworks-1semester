@@ -206,9 +206,9 @@ int AVLTreeTask(void) {
         }
     }
 
-    deleteAVLTree(tree);
     free(value);
     free(key);
+    deleteAVLTree(tree);
     return 0;
 }
 

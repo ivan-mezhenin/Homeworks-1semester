@@ -149,24 +149,9 @@ Node* createNode(const char* key, const char* value, int* errorCode) {
     return newNode;
 }
 
-void addChild(Node* node, const char* key, const char* value, Position position, int* errorCode) {
-    Node* newNode = createNode(key, value, errorCode);
-    if (*errorCode != 0) {
-        return;
-    }
-
-    if (position == left) {
-        node->leftChild = newNode;
-        return;
-    }
-
-    node->rightChild = newNode;
-}
-
-void insertValueInAVLTree(Node* node, const char* key, const char* value, int* errorCode) {
+Node* insertValueInDictionary(Node* node, const char* key, const char* value, int* errorCode) {
     if (node == NULL) {
-        *errorCode = POINTER_IS_NULL;
-        return;
+        return createNode(key, value, errorCode);
     }
 
     if (strcmp(key, node->key) == 0) {
@@ -175,28 +160,17 @@ void insertValueInAVLTree(Node* node, const char* key, const char* value, int* e
         if (node->value != NULL) {
             strcpy(node->value, value);
         }
-        return;
     }
-
-    if (strcmp(key, node->key) < 0) {
-        if (node->leftChild == NULL) {
-            addChild(node, key, value, left, errorCode);
-            return;
-        }
-
-        insertValueInAVLTree(node->leftChild, key, value, errorCode);
+    else if (strcmp(key, node->key) < 0) {
+        node->leftChild = insertValueInDictionary(node->leftChild, key, value, errorCode);
         node->leftChild = balance(node->leftChild, errorCode);
     }
-    
-    if (strcmp(key, node->key) > 0) {
-        if (node->rightChild == NULL) {
-            addChild(node, key, value, right, errorCode);
-            return;
-        }
-
-        insertValueInAVLTree(node->rightChild, key, value, errorCode);
+    else {
+        node->rightChild = insertValueInDictionary(node->rightChild, key, value, errorCode);
         node->rightChild = balance(node->rightChild, errorCode);
     }
+
+    return node;
 }
 
 void addValueInAVLTree(AVLTree* tree, const char* key, const char* value, int* errorCode) {
@@ -206,16 +180,11 @@ void addValueInAVLTree(AVLTree* tree, const char* key, const char* value, int* e
     }
 
     if (isAVLTreeEmpty(tree)) {
-        Node* newRoot = createNode(key, value, errorCode);
-        if (*errorCode != 0) {
-            return;
-        }
-
-        tree->root = newRoot;
+        tree->root = createNode(key, value, errorCode);
         return;
     }
 
-    insertValueInAVLTree(tree->root, key, value, errorCode);
+    tree->root = insertValueInDictionary(tree->root, key, value, errorCode);
     tree->root = balance(tree->root, errorCode);
 }
 
