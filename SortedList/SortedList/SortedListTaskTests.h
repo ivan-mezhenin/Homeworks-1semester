@@ -1,7 +1,6 @@
 #pragma once
 
-#include "SortedList.h"
+#include <stdbool.h>
 
-bool test1(void);
-bool test2(void);
+// function from testing programm
 bool test(void);

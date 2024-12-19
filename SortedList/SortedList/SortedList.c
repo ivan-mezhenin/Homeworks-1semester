@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#define MEMORY_ALLOCATION_ERROR -1
+#define POINTER_IS_NULL -2
+#define INVALID_OPERATION_WITH_EMPTY_LIST -3
+
 typedef struct SortedListElement {
     int value;
     struct SortedListElement* next;
@@ -11,14 +15,18 @@ typedef struct SortedListElement {
 
 typedef struct SortedList {
     SortedListElement* head;
+    int length;
 } SortedList;
 
 SortedList* createSortedList(int *errorCode) {
-    SortedList* list = calloc(1, sizeof(list));
+    SortedList* list = calloc(1, sizeof(SortedList));
     if (list == NULL) {
         *errorCode = MEMORY_ALLOCATION_ERROR;
         return NULL;
     }
+
+    list->length = 0;
+    list->head = NULL;
 
     return list;
 }
@@ -38,27 +46,24 @@ void addElementInSortedList(SortedList* list, const int value, int* errorCode) {
         return;
     }
 
-    if (isSortedListEmpty(list, *errorCode)) {
-        SortedListElement* newElement = calloc(1, sizeof(SortedListElement));
-        if (newElement == NULL) {
-            *errorCode = MEMORY_ALLOCATION_ERROR;
-            return;
-        }
-        list->head = newElement;
-        newElement->value = value;
-        newElement->next = NULL;
-        return;
-    }
-    if (*errorCode != 0) {
-        return;
-    }
+    ++list->length;
 
     SortedListElement* newElement = calloc(1, sizeof(SortedListElement));
     if (newElement == NULL) {
         *errorCode = MEMORY_ALLOCATION_ERROR;
         return;
     }
+
     newElement->value = value;
+
+    if (isSortedListEmpty(list, *errorCode)) {
+        list->head = newElement;
+        newElement->next = NULL;
+        return;
+    }
+    if (*errorCode != 0) {
+        return;
+    }
 
     SortedListElement* currentElement = list->head;
     if (currentElement->value >= value) {
@@ -111,13 +116,14 @@ void deleteSortedListElement(SortedList* list, const int value, int* errorCode) 
     }
 
     if (isSortedListEmpty(list, errorCode)) {
-        printf("List is empty\n");
+        *errorCode = INVALID_OPERATION_WITH_EMPTY_LIST;
         return;
     }
     if (*errorCode != 0) {
         return;
     }
 
+    --list->length;
     SortedListElement* currentElement = list->head;
     if (value == currentElement->value) {
         list->head = list->head->next;
@@ -139,23 +145,6 @@ void deleteSortedListElement(SortedList* list, const int value, int* errorCode) 
     printf("Value %d not in list\n", value);
 }
 
-bool isListSorted(SortedList* list, int* errorCode) {
-    if (list == NULL) {
-        *errorCode = POINTER_IS_NULL;
-        return;
-    }
-
-    SortedListElement* current = list->head;
-    while (current->next != NULL) {
-        if (current->value > current->next->value) {
-            return false;
-        }
-        current = current->next;
-    }
-
-    return true;
-}
-
 void deleteSortedList(SortedList* list, int* errorCode) {
     if (list == NULL) {
         *errorCode = POINTER_IS_NULL;
@@ -169,11 +158,29 @@ void deleteSortedList(SortedList* list, int* errorCode) {
         return;
     }
 
-    while (!isSortedListEmpty(list, errorCode)) {
+    while (list->head != NULL) {
         SortedListElement* deletedElement = list->head;
-        list->head = list->head->next;
+        list->head = deletedElement->next;
         free(deletedElement);
     }
 
     free(list);
+}
+
+int getValueByIndex(SortedList* list, int index) {
+    SortedListElement* current = list->head;
+    
+    if (index == 0) {
+        return current->value;
+    }
+
+    for (int i = 0; i < index; ++i) {
+        current = current->next;
+    }
+
+    return current->value;
+}
+
+int getListLength(SortedList* list) {
+    return list->head == NULL ? 0 : list->length;
 }

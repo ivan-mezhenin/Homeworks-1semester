@@ -1,4 +1,5 @@
 #include "SortedListTaskTests.h"
+#include "SortedList.h"
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -23,9 +24,12 @@ bool test1(void) {
         return false;
     }
 
-    bool isTestCompleted = isListSorted(list, &errorCode);
-    if (errorCode != 0) {
-        return false;
+    bool isTestCompleted = true;
+    for (int i = 1; i < getListLength(list); ++i) {
+        if (getValueByIndex(list, i - 1) > getValueByIndex(list, i)) {
+            isTestCompleted = false;
+            break;
+        }
     }
 
     deleteSortedList(list, &errorCode);
@@ -58,9 +62,12 @@ bool test2(void) {
         return false;
     }
 
-    bool isTestCompleted = isListSorted(list, &errorCode);
-    if (errorCode != 0) {
-        return false;
+    bool isTestCompleted = true;
+    for (int i = 1; i < getListLength(list); ++i) {
+        if (getValueByIndex(list, i - 1) > getValueByIndex(list, i)) {
+            isTestCompleted = false;
+            break;
+        }
     }
 
     deleteSortedList(list, &errorCode);
