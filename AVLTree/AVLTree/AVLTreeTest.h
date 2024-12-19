@@ -2,5 +2,5 @@
 
 #include <stdbool.h>
 
-//function from testing program
+// function from testing program
 bool test(void);

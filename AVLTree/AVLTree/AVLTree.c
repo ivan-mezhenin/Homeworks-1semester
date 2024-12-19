@@ -47,10 +47,6 @@ AVLTree* createAVLTree(int* errorCode) {
     return tree;
 }
 
-bool isAVLTreeEmpty(AVLTree* tree) {
-    return tree->root == NULL;
-}
-
 //     a                  b    
 //   /   \              /   \  
 //  L     b    -->     a     R 
@@ -120,6 +116,10 @@ Node* balance(Node* node, int* errorCode) {
     }
 
     return node;
+}
+
+bool isAVLTreeEmpty(AVLTree* tree) {
+    return tree->root == NULL;
 }
 
 Node* createNode(const char* key, const char* value, int* errorCode) {
@@ -218,7 +218,6 @@ void addValueInAVLTree(AVLTree* tree, const char* key, const char* value, int* e
     insertValueInAVLTree(tree->root, key, value, errorCode);
     tree->root = balance(tree->root, errorCode);
 }
-
 
 Node* getNodeByKey(Node* node, const char* key) {
     if (node == NULL) {
@@ -354,7 +353,6 @@ void deleteNode(Node** node, const char * key, int* errorCode) {
         deleteNode(&(*node)->rightChild, temporaryNode->key, errorCode);
     }
 }
-
 
 void deleteValue(AVLTree* tree, const char * key, int* errorCode) {
     if (tree == NULL) {
