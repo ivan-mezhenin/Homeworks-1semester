@@ -12,23 +12,23 @@ typedef struct Node Node;
 
 typedef struct Dictionary Dictionary;
 
-//return pointer on search tree
+// return pointer on search tree
 Dictionary* createDictionary(int* errorCode);
 
-//return tree empty or not
+// return tree empty or not
 bool isDictionaryEmpty(Dictionary* tree);
 
-//return key in dictionary or not
+// return key in dictionary or not
 bool isKeyInDictionary(Dictionary* tree, int key, int* errorCode);
 
 // add new node in tree
 void addValueInDictionary(Dictionary* tree, int key, char* value, int* errorCode);
 
-//return value by key
+// return value by key
 char* getValue(Dictionary* tree, int key, int* errorCode);
 
-//delete value by key
+// delete value by key
 void deleteValue(Dictionary* tree, int key, int* errorCode);
 
-//destroy tree <3
+// destroy tree <3
 void deleteDictionary(Dictionary* tree);
