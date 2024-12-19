@@ -31,4 +31,4 @@ char* getValue(Dictionary* tree, int key, int* errorCode);
 void deleteValue(Dictionary* tree, int key, int* errorCode);
 
 // destroy tree <3
-void deleteDictionary(Dictionary* tree);
+void deleteDictionary(Dictionary* dict);

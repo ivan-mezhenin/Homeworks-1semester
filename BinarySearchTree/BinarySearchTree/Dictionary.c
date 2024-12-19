@@ -24,7 +24,6 @@ typedef enum {
 Dictionary* createDictionary(int* errorCode) {
     Dictionary* tree = calloc(1, sizeof(Dictionary));
     if (tree == NULL) {
-        free(tree);
         *errorCode = MEMORY_ALLOCATION_ERROR;
         return NULL;
     }
@@ -55,47 +54,22 @@ Node* createNode(int key, char* value, int* errorCode) {
     return newNode;
 }
 
-void addChild(Node* node, int key, char* value, Position position, int* errorCode) {
-    Node* newNode = createNode(key, value, errorCode);
-    if (*errorCode != 0) {
-        return;
-    }
-
-    if (position == left) {
-        node->leftChild = newNode;
-        return;
-    }
-
-    node->rightChild = newNode;
-}
-
-void insertValueInDictionary(Node* node, int key, char* value, int* errorCode) {
+Node* insertValueInDictionary(Node* node, int key, char* value, int * errorCode) {
     if (node == NULL) {
-        *errorCode = POINTER_IS_NULL;
-        return;
+        return createNode(key, value, errorCode);
     }
 
     if (key == node->key) {
         strcpy(node->value, value);
-        return;
+    }
+    else if (key < node->key) {
+        node->leftChild = insertValueInDictionary(node->leftChild, key, value, errorCode);
+    }
+    else {
+        node->rightChild = insertValueInDictionary(node->rightChild, key, value, errorCode);
     }
 
-    if (key < node->key) {
-        if (node->leftChild == NULL) {
-            addChild(node, key, value, left, errorCode);
-            return;
-        }
-
-        insertValueInDictionary(node->leftChild, key, value, errorCode);
-    }
-    if (key > node->key) {
-        if (node->rightChild == NULL) {
-            addChild(node, key, value, right, errorCode);
-            return;
-        }
-
-        insertValueInDictionary(node->rightChild, key, value, errorCode);
-    }
+    return node;
 }
 
 void addValueInDictionary(Dictionary* tree, int key, char* value, int* errorCode) {
@@ -105,12 +79,11 @@ void addValueInDictionary(Dictionary* tree, int key, char* value, int* errorCode
     }
 
     if (isDictionaryEmpty(tree)) {
-        Node* newRoot = createNode(key, value, errorCode);
-        tree->root = newRoot;
+        tree->root = createNode(key, value, errorCode);
         return;
     }
 
-    insertValueInDictionary(tree->root, key, value, errorCode);
+    tree->root = insertValueInDictionary(tree->root, key, value, errorCode);
 }
 
 Node* getNodeByKey(Node* node, int key) {
@@ -248,22 +221,24 @@ void deleteValue(Dictionary* tree, int key, int* errorCode) {
     deleteNode(&tree->root, key, errorCode);
 }
 
-void deleteChildren(Node* node) {
-    if (node != NULL) {
-        deleteChildren(node->leftChild);
-        deleteChildren(node->rightChild);
-
-        if (node->value != NULL) {
-            free(node->value);
-        }
-
-        free(node);
+void deleteTreeNodes(Node* node) {
+    if (node == NULL) {
+        return;
     }
+
+    deleteTreeNodes(node->leftChild);
+    deleteTreeNodes(node->rightChild);
+
+    free(node->value);
+    free(node);
 }
 
-void deleteDictionary(Dictionary* tree) {
-    if (tree != NULL) {
-        deleteChildren(tree->root);
-        free(tree);
+void deleteDictionary(Dictionary* dict) {
+    if (dict == NULL) {
+        return;
     }
+
+    deleteTreeNodes(dict->root);
+
+    dict->root = NULL;
 }

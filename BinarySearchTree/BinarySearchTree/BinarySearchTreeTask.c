@@ -164,8 +164,9 @@ int binarySearchTreeTask(void) {
         }
     }
 
-    deleteDictionary(dictionary);
     free(value);
+    deleteDictionary(dictionary);
+
     return 0;
 }
 
