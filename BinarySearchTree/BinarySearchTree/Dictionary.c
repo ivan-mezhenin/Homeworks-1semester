@@ -16,11 +16,6 @@ typedef struct Dictionary {
     Node* root;
 } Dictionary;
 
-typedef enum {
-    left,
-    right
-} Position;
-
 Dictionary* createDictionary(int* errorCode) {
     Dictionary* tree = calloc(1, sizeof(Dictionary));
     if (tree == NULL) {
@@ -38,7 +33,6 @@ bool isDictionaryEmpty(Dictionary* tree) {
 Node* createNode(int key, char* value, int* errorCode) {
     Node* newNode = calloc(1, sizeof(Node));
     if (newNode == NULL) {
-        free(newNode);
         *errorCode = MEMORY_ALLOCATION_ERROR;
         return NULL;
     }
@@ -117,29 +111,13 @@ char* getValue(Dictionary* tree, int key, int* errorCode) {
     return foundNode->value;
 }
 
-bool findKeyInDictionary(Node* node, int key, int* errorCode) {
-    if (node == NULL) {
-        return false;
-    }
-
-    if (node->key == key) {
-        return true;
-    }
-
-    if (key > node->key) {
-        return findKeyInDictionary(node->rightChild, key, errorCode);
-    }
-
-    return findKeyInDictionary(node->leftChild, key, errorCode);
-}
-
 bool isKeyInDictionary(Dictionary* tree, int key, int* errorCode) {
     if (tree == NULL) {
         *errorCode = POINTER_IS_NULL;
         return false;
     }
 
-    return findKeyInDictionary(tree->root, key, errorCode);
+    return getNodeByKey(tree->root, key, errorCode) != NULL;
 }
 
 Node* getMinValueNode(Node* node) {

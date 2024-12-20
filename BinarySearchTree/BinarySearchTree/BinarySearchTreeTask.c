@@ -33,6 +33,7 @@ int binarySearchTreeTask(void) {
     int operation = 0;
     if (scanf("%d", &operation) != 1) {
         printf("Input error\n");
+        deleteDictionary(dictionary);
         return INPUT_ERROR;
     }
 
@@ -41,6 +42,7 @@ int binarySearchTreeTask(void) {
     if (value == NULL) {
         errorCode = MEMORY_ALLOCATION_ERROR;
         printf("Memory allocation error while creating value\n");
+        deleteDictionary(dictionary);
         return errorCode;
     }
 
@@ -58,12 +60,16 @@ int binarySearchTreeTask(void) {
             printf("Enter key: ");
             if (scanf("%d", &key) <= 0) {
                 printf("Input error\n");
+                deleteDictionary(dictionary);
+                return(value);
                 return INPUT_ERROR;
             }
 
             printf("Enter value: ");
             if (scanf("%s", value) <= 0) {
                 printf("Input error\n");
+                deleteDictionary(dictionary);
+                return(value);
                 return INPUT_ERROR;
             }
 
@@ -71,9 +77,12 @@ int binarySearchTreeTask(void) {
             if (errorCode == POINTER_IS_NULL) {
                 printf("Passing a null pointer while adding value in dictionary\n");
                 deleteDictionary(dictionary);
+                free(value);
                 return errorCode;
             }
             else if (errorCode == MEMORY_ALLOCATION_ERROR) {
+                deleteDictionary(dictionary);
+                return(value);
                 printf("Memory allocation error while adding value in dictionary\n");
             }
 
@@ -84,6 +93,8 @@ int binarySearchTreeTask(void) {
             printf("Enter key: ");
             if (scanf("%d", &key) <= 0) {
                 printf("Input error\n");
+                deleteDictionary(dictionary);
+                return(value);
                 return INPUT_ERROR;
             }
 
@@ -91,6 +102,7 @@ int binarySearchTreeTask(void) {
             if (errorCode == POINTER_IS_NULL) {
                 printf("Passing a null pointer while getting value from dictionary\n");
                 deleteDictionary(dictionary);
+                free(value);
                 return errorCode;
             }
             else if (errorCode == KEY_NOT_FOUND) {
@@ -106,6 +118,8 @@ int binarySearchTreeTask(void) {
             printf("Enter key: ");
             if (scanf("%d", &key) <= 0) {
                 printf("Input error\n");
+                deleteDictionary(dictionary);
+                return(value);
                 return INPUT_ERROR;
             }
 
@@ -113,6 +127,7 @@ int binarySearchTreeTask(void) {
             if (errorCode == POINTER_IS_NULL) {
                 printf("Passing a null pointer while checking presence of key in dictionary\n");
                 deleteDictionary(dictionary);
+                free(value);
                 return errorCode;
             }
 
@@ -129,6 +144,7 @@ int binarySearchTreeTask(void) {
             if (scanf("%d", &key) <= 0) {
                 printf("Input error\n");
                 deleteDictionary(dictionary);
+                free(value);
                 return INPUT_ERROR;
             }
 
@@ -136,6 +152,7 @@ int binarySearchTreeTask(void) {
             if (errorCode == POINTER_IS_NULL) {
                 printf("Passing a null pointer while removal value from dictionary\n");
                 deleteDictionary(dictionary);
+                free(value);
                 return errorCode;
             }
             else if (errorCode == KEY_NOT_FOUND) {
@@ -160,6 +177,8 @@ int binarySearchTreeTask(void) {
         
         if (scanf("%d", &operation) != 1) {
             printf("Input error\n");
+            deleteDictionary(dictionary);
+            return(value);
             return INPUT_ERROR;
         }
     }
