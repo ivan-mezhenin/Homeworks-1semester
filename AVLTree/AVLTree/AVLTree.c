@@ -131,7 +131,6 @@ Node* createNode(const char* key, const char* value, int* errorCode) {
 
     newNode->value = malloc(strlen(value) + 1);
     if (newNode->value == NULL) {
-        free(newNode);
         *errorCode = MEMORY_ALLOCATION_ERROR;
         return NULL;
     }
