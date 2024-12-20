@@ -8,6 +8,7 @@
 #define MEMORY_ALLOCATION_ERROR -1
 #define POINTER_IS_NULL -2
 #define FILE_NOT_FOUND -3
+#define TESTS_FAILED -4
 
 void writeToFile(Node* head, FILE* file, int* errorCode) {
     if (head == NULL) {
@@ -120,7 +121,90 @@ void solve(char* filename1, char* filename2, int a, int b, int* errorCode) {
     fclose(file2);
 }
 
+bool test1(void) {
+    int a = 15;
+    int b = 30;
+    int errorCode = 0;
+    solve("testf1.txt", "testg1.txt", a, b, &errorCode);
+    if (errorCode != 0) {
+        printf("Test 1 failed\n");
+        return false;
+    }
+
+    int expectedResult[] = {11, 9, 12, 1, 28, 56, 49, 233, 70, 34};
+    FILE* file = fopen("testg1.txt", "w");
+    if (file == NULL) {
+        printf("Test 1 failed\n");
+        return false;
+    }
+
+    int index = 0;
+
+    while (!feof(file)) {
+        int number = 0;;
+        const int readBytes = fscanf(file, "%d", &number);
+        if (readBytes < 0) {
+            printf("Test 1 failed\n");
+            return false;
+        }
+
+        if (expectedResult[index] != number) {
+            printf("Test 1 failed\n");
+            return false;
+        }
+    }
+
+    fclose(file);
+    return true;
+}
+
+bool test2(void) {
+    int a = 3;
+    int b = 8;
+    int errorCode = 0;
+    solve("testf2.txt", "testg2.txt", a, b, &errorCode);
+    if (errorCode != 0) {
+        printf("Test 2 failed\n");
+        return false;
+    }
+
+    int expectedResult[] = {2, 1, 0, 8, 7, 6, 5, 4, 3, 11, 10, 9};
+    FILE* file = fopen("testg2.txt", "w");
+    if (file == NULL) {
+        printf("Test 2 failed\n");
+        return false;
+    }
+
+    int index = 0;
+
+    while (!feof(file)) {
+        int number = 0;;
+        const int readBytes = fscanf(file, "%d", &number);
+        if (readBytes < 0) {
+            printf("Test 2 failed\n");
+            return false;
+        }
+
+        if (expectedResult[index] != number) {
+            printf("Test 2 failed\n");
+            return false;
+        }
+    }
+
+    fclose(file);
+    return true;
+}
+
+bool test(void) {
+    return test1() && test2();
+}
+
 int main(void) {
+    if (!test()) {
+        printf("Tests failed\n");
+        return TESTS_FAILED;
+    }
+
     int errorCode = 0;
     int a = 13;
     int b = 30;
@@ -135,4 +219,6 @@ int main(void) {
     else if (errorCode == FILE_NOT_FOUND) {
         printf("File not found\n");
     }
+
+    return errorCode;
 }
