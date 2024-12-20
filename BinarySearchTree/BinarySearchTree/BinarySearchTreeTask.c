@@ -61,7 +61,7 @@ int binarySearchTreeTask(void) {
             if (scanf("%d", &key) <= 0) {
                 printf("Input error\n");
                 deleteDictionary(dictionary);
-                return(value);
+                free(value);
                 return INPUT_ERROR;
             }
 
@@ -69,7 +69,7 @@ int binarySearchTreeTask(void) {
             if (scanf("%s", value) <= 0) {
                 printf("Input error\n");
                 deleteDictionary(dictionary);
-                return(value);
+                free(value);
                 return INPUT_ERROR;
             }
 
@@ -82,7 +82,7 @@ int binarySearchTreeTask(void) {
             }
             else if (errorCode == MEMORY_ALLOCATION_ERROR) {
                 deleteDictionary(dictionary);
-                return(value);
+                free(value);
                 printf("Memory allocation error while adding value in dictionary\n");
             }
 
@@ -94,7 +94,7 @@ int binarySearchTreeTask(void) {
             if (scanf("%d", &key) <= 0) {
                 printf("Input error\n");
                 deleteDictionary(dictionary);
-                return(value);
+                free(value);
                 return INPUT_ERROR;
             }
 
@@ -119,7 +119,7 @@ int binarySearchTreeTask(void) {
             if (scanf("%d", &key) <= 0) {
                 printf("Input error\n");
                 deleteDictionary(dictionary);
-                return(value);
+                free(value);
                 return INPUT_ERROR;
             }
 
@@ -178,7 +178,7 @@ int binarySearchTreeTask(void) {
         if (scanf("%d", &operation) != 1) {
             printf("Input error\n");
             deleteDictionary(dictionary);
-            return(value);
+            free(value);
             return INPUT_ERROR;
         }
     }
