@@ -1,7 +1,7 @@
 #include "Stack.h"
 #include "Queue.h"
 
-#include "stdlib.h"
+#include <stdlib.h>
 
 #define MEMORY_ALLOCATION_ERROR -1
 #define POINTER_IS_NULL -2
