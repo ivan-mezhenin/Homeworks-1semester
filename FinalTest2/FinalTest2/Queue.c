@@ -43,7 +43,7 @@ void enqueue(Queue* queue, int value, int* errorCode) {
 
 int dequeue(Queue* queue, int* errorCode) {
     if (!isStackEmpty(queue->stack2)) {
-        int popedElement = popInt(queue->stack2, errorCode);
+        int poppedElement = popInt(queue->stack2, errorCode);
         if (*errorCode != 0) {
             return *errorCode;
         }
