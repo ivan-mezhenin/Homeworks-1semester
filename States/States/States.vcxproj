@@ -129,10 +129,18 @@
   <ItemGroup>
     <ClCompile Include="Graph.c" />
     <ClCompile Include="States.c" />
+    <ClCompile Include="StatesTask.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graph.h" />
     <ClInclude Include="States.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="testdata1.txt" />
+    <Text Include="testdata2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,6 +21,9 @@
     <ClCompile Include="Graph.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="StatesTask.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graph.h">
@@ -29,5 +32,18 @@
     <ClInclude Include="States.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="testdata1.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="testdata2.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>
