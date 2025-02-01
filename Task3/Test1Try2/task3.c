@@ -17,12 +17,7 @@ void dfs(int graph[MAX_VERTICES][MAX_VERTICES], int visited[], int vertex, int a
 }
 
 int* findReachableVertices(int graph[MAX_VERTICES][MAX_VERTICES], int amountOfVertices, int* amountOfReachebleVertices, int* errorCode) {
-    int* reachableVertices = calloc(MAX_VERTICES, sizeof(int));
-    if (reachableVertices == NULL) {
-        *errorCode = MEMORY_ALLOCATION_ERROR;
-        return NULL;
-    }
-
+    int reachableVertices[MAX_VERTICES] = {0};
     int index = 0;
 
     for (int i = 0; i < amountOfVertices; ++i) {
@@ -75,8 +70,6 @@ bool findReachableVerticesTest1(void) {
         }
     }
 
-    free(reachableVertices);
-
     return passed;
 }
 
@@ -96,8 +89,6 @@ bool findReachableVerticesTest2(void) {
     }
 
     bool passed = amountOfReachebleVertices == 0;
-
-    free(reachableVertices);
 
     return passed;
 }
@@ -140,7 +131,6 @@ int main(void) {
             printf("%d ", reachableVertices[i]);
         }
 
-        free(reachableVertices);
     }
     else if (errorCode == MEMORY_ALLOCATION_ERROR) {
         printf("Memory allocation error\n");
