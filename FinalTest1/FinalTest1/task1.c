@@ -12,7 +12,7 @@
 
 const char* convertFromBinaryToDecimal(const char* binaryNumber, int* errorCode) {
     int decimalNumber = 0;
-    char* stringDecimalNumber = malloc(MAX_DECIMAL_NOTATION_SIZE*sizeof(char));
+    char* stringDecimalNumber = malloc(MAX_DECIMAL_NOTATION_SIZE * sizeof(char));
     if (stringDecimalNumber == NULL) {
         *errorCode = MEMORY_ALLOCATION_ERROR;
         return NULL;
